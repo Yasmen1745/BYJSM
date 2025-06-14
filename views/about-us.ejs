@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - BYJSM BookStore</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  </head>
+  <body>
+    <%- include('partials/navbar') %>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+            <h1 class="display-4 fw-bold mb-4">Our Story</h1>
+            <p class="lead mb-4">
+              Founded in 2025, BYJSM BookStore has grown from a small local bookstore to a beloved destination for book lovers around Egypt. Our journey is one of passion, dedication, and a deep love for Reading.
+            </p>
+            <div class="d-flex gap-3">
+              <div class="stat-box">
+                <h3 class="stat-number">20</h3>
+                <p class="stat-label">Happy Readers</p>
+              </div>
+              <div class="stat-box">
+                <h3 class="stat-number">30</h3>
+                <p class="stat-label">Books Available</p>
+              </div>
+              <div class="stat-box">
+                <h3 class="stat-number">10</h3>
+                <p class="stat-label">Authors</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="BYJSM BookStore Store" class="img-fluid rounded-3 shadow-lg" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 order-lg-2">
+            <div class="mission-content">
+              <h2 class="section-title">Our Mission</h2>
+              <p class="lead mb-4">
+                At BYJSM BookStore, we believe that books have the power to transform lives. Our mission is to make quality literature accessible to everyone while fostering a community of passionate readers. <br> And as George R. R. Martin said "A reder lives thousands of lives before he dies. The man who never reads lives only one."
+              </p>
+              <div class="mission-values">
+                <div class="value-item">
+                  <i class="fas fa-book-open"></i>
+                  <h4>Quality Literature</h4>
+                  <p>Curating the finest selection of books across all genres</p>
+                </div>
+                <div class="value-item">
+                  <i class="fas fa-users"></i>
+                  <h4>Community</h4>
+                  <p>Building a vibrant community of book lovers</p>
+                </div>
+                <div class="value-item">
+                  <i class="fas fa-globe"></i>
+                  <h4>Accessibility</h4>
+                  <p>Making books available to readers everywhere</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 order-lg-1">
+            <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Our Mission" class="img-fluid rounded-3 shadow-lg" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+      <div class="container">
+        <h2 class="section-title text-center mb-5">What Our Community Says</h2>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="testimonial-card">
+              <div class="testimonial-content">
+                <i class="fas fa-quote-left"></i>
+                <p>"BYJSM BookStore has transformed my reading experience!"</p>
+              </div>
+              <div class="testimonial-author">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Author" />
+                <div class="author-info">
+                  <h4>Hana Hisham</h4>
+                  <p>BYJMS Buyer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="testimonial-card">
+              <div class="testimonial-content">
+                <i class="fas fa-quote-left"></i>
+                <p>"The rare book collection is incredible. I've found treasures I never thought I'd see in person."</p>
+              </div>
+              <div class="testimonial-author">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Author" />
+                <div class="author-info">
+                  <h4>Kenzy EL-Walid</h4>
+                  <p>Collector</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="testimonial-card">
+              <div class="testimonial-content">
+                <i class="fas fa-quote-left"></i>
+                <p>"The virtual author events are fantastic. I've met my favorite writers from the comfort of my home."</p>
+              </div>
+              <div class="testimonial-author">
+                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Author" />
+                <div class="author-info">
+                  <h4>Zyad Ibrahim</h4>
+                  <p>Event Participant</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <%- include('partials/footer') %>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Add AOS JS before closing body tag -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      // Initialize AOS
+      AOS.init({
+        once: true,
+        offset: 100,
+        duration: 800,
+      });
+    </script>
+  </body>
+</html> 

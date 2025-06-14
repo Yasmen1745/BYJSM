@@ -1,0 +1,457 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top mt-2 mx-5 mb-5">
+  <div class="container d-flex align-items-center">
+    <a class="navbar-brand fw-bold me-4" href="/">
+      <i class="fas fa-book-open me-2 text-primary"></i>
+      <span>BYJSM</span>
+    </a>
+
+    <button
+      class="navbar-toggler border-0 ms-2"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav mb-2 mb-lg-0 d-flex justify-content-center align-items-center w-100" style="gap: 2rem;">
+        <li class="nav-item">
+          <a class="nav-link" href="/">
+            <i class="fas fa-compass me-1"></i>Books
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about-us">
+            <i class="fas fa-info-circle me-1"></i>About
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact-us">
+            <i class="fas fa-envelope me-1"></i>Contact
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav align-items-center" style="margin-left: auto !important; margin-right: 0;">
+        <% if (user) { %>
+        <li class="nav-item me-3">
+          <button
+            class="btn btn-cart border-0 position-relative"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRight"
+            aria-controls="offcanvasRight"
+            style="margin-left: 1rem;"
+          >
+            <i class="fas fa-shopping-cart me-1"></i>Cart
+            <span
+              class="badge bg-primary rounded-pill position-absolute top-0 start-100 translate-middle text-white"
+            >
+              <%= user.cart.items.reduce((sum, item) => sum + item.quantity, 0) %>
+            </span>
+          </button>
+        </li>
+
+        <li class="nav-item dropdown" style="margin-left: 0.5rem;">
+          <a
+            class="nav-link dropdown-toggle d-flex align-items-center"
+            href="#"
+            id="profileDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fas fa-user-circle me-1"></i>
+            <%= user.name || 'Account' %>
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end shadow-sm border-0"
+            aria-labelledby="profileDropdown"
+          >
+            <li>
+              <button
+                class="dropdown-item"
+                onclick="window.location.href='/profile'"
+              >
+                <i class="fas fa-user me-2"></i>Profile
+              </button>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <button
+                class="dropdown-item text-danger"
+                onclick="window.location.href='/api/user/logout'"
+              >
+                <i class="fas fa-sign-out-alt me-2"></i>Logout
+              </button>
+            </li>
+          </ul>
+        </li>
+        <% } else { %>
+        <li class="nav-item">
+          <button
+            class="btn btn-outline-primary btn-sm me-2"
+            data-bs-toggle="modal"
+            data-bs-target="#loginModal"
+          >
+            <i class="fas fa-sign-in-alt me-1"></i>Sign In
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="btn btn-primary btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#signupModal"
+          >
+            <i class="fas fa-user-plus me-1"></i>Join
+          </button>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    padding: 1rem 2rem;
+    height: 80px;
+    border-radius:1.5rem;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.656);
+  }
+
+  .navbar .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .navbar-brand i {
+    font-size: 1.75rem;
+    margin-right: 0.75rem;
+  }
+
+  .nav-link {
+    color: #2c3e50 !important;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0.5rem 1rem;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .nav-link:hover {
+    color: #3498db !important;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #3498db;
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover::after {
+    width: 80%;
+  }
+
+  .btn-outline-primary {
+    border-width: 2px;
+    border-radius: 9999px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #3498db;
+    border-color: #3498db;
+    transform: translateY(-1px);
+  }
+
+  .btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+    border-radius: 9999px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+    transform: translateY(-1px);
+  }
+
+  .btn-cart {
+    background: transparent;
+    color: #2c3e50;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 9999px;
+    padding: 0.5rem 1.25rem;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .btn-cart:hover {
+    color: #3498db;
+    background-color: rgba(52, 152, 219, 0.1);
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .dropdown-menu {
+    border-radius: 1rem;
+    padding: 0.75rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: none;
+  }
+
+  .dropdown-item {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #3498db;
+  }
+
+  .dropdown-item.text-danger:hover {
+    background-color: #dc3545;
+    color: white !important;
+  }
+
+  @media (max-width: 991.98px) {
+    .navbar {
+      padding: 1rem;
+    }
+    
+    .navbar-collapse {
+      background: white;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      margin-top: 1rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Add shadow on scroll
+    window.addEventListener("scroll", function () {
+      const navbar = document.querySelector(".navbar");
+      if (navbar) {
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      }
+    });
+
+    // Add event listeners when offcanvas is shown
+    const offcanvas = document.getElementById("offcanvasRight");
+    if (offcanvas) {
+      offcanvas.addEventListener("show.bs.offcanvas", function () {
+        // Add event listeners for cart buttons
+        document
+          .querySelectorAll(".btn-increase, .btn-decrease")
+          .forEach((button) => {
+            button.addEventListener("click", async (event) => {
+              const btn = event.currentTarget;
+              const bookId = btn.getAttribute("data-book-id");
+              const action = btn.getAttribute("data-action"); // "plus" or "minus"
+              btn.disabled = true;
+
+              try {
+                const res = await fetch(`/api/user/cart/${bookId}`, {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ btn_type: action }),
+                });
+
+                const data = await res.json();
+
+                if (data.error) {
+                  alert(data.error);
+                  return;
+                }
+
+                const updatedCart = data.cart;
+
+                // Update this item if it still exists
+                const updatedItem = updatedCart.items.find(
+                  (item) => item.book._id === bookId || item.book === bookId
+                );
+
+                const cartItemElem = document.querySelector(
+                  `.d-flex.align-items-center.border-bottom.py-3[data-book-id="${bookId}"]`
+                );
+
+                if (updatedItem) {
+                  // Update quantity
+                  cartItemElem.querySelector(".item-quantity").textContent =
+                    updatedItem.quantity;
+
+                  // Update subtotal
+                  cartItemElem.querySelector(
+                    ".item-price"
+                  ).textContent = `EGP ${updatedItem.price.toFixed(2)}`;
+                } else {
+                  // Item was removed (quantity = 0)
+                  if (cartItemElem) cartItemElem.remove();
+                }
+
+                // Update total price
+                const totalPriceElem = document.querySelector(".total-price");
+                if (totalPriceElem) {
+                  totalPriceElem.textContent = `EGP ${updatedCart.totalPrice.toFixed(
+                    2
+                  )}`;
+                }
+
+                // If cart is empty now, show message
+                if (updatedCart.items.length === 0) {
+                  const offcanvasBody =
+                    document.querySelector(".offcanvas-body");
+                  if (offcanvasBody) {
+                    offcanvasBody.innerHTML = `<p class="text-muted">Your cart is empty.</p>`;
+                  }
+                }
+
+                // Update cart count in navbar
+                const cartCount = document.querySelector(".badge");
+                if (cartCount) {
+                  cartCount.textContent = updatedCart.items.reduce(
+                    (sum, item) => sum + item.quantity,
+                    0
+                  );
+                }
+              } catch (error) {
+                console.error("Fetch error:", error);
+                alert("An error occurred while updating the cart.");
+              } finally {
+                btn.disabled = false;
+              }
+            });
+          });
+      });
+    }
+  });
+</script>
+
+<!-- Offcanvas Cart Panel -->
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="offcanvasRight"
+  aria-labelledby="offcanvasRightLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">
+      <i class="fas fa-shopping-cart me-2"></i>Your Cart
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+
+  <div class="offcanvas-body d-flex flex-column">
+    <% if (user && user.cart && user.cart.items.length > 0) { %> <% let total =
+    0; %> <% user.cart.items.forEach(item => { const book = item.book; const
+    subtotal = book.price * item.quantity; total += subtotal; %>
+    <div
+      class="cart-item d-flex align-items-center border-bottom py-3"
+      data-book-id="<%= book._id %>"
+    >
+      <img
+        src="<%= book.image %>"
+        alt="<%= book.title %>"
+        class="cart-item-image me-3"
+      />
+      <div class="flex-grow-1">
+        <h6 class="cart-item-title mb-1"><%= book.title %></h6>
+        <div class="d-flex align-items-center">
+          <button
+            class="btn btn-quantity btn-sm me-2 btn-decrease"
+            data-book-id="<%= book._id %>"
+            data-action="minus"
+          >
+            <i class="fas fa-minus"></i>
+          </button>
+          <span class="item-quantity"><%= item.quantity %></span>
+          <button
+            class="btn btn-quantity btn-sm ms-2 btn-increase"
+            data-book-id="<%= book._id %>"
+            data-action="plus"
+          >
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+      </div>
+      <div class="ms-3">
+        <strong class="item-price">EGP <%= subtotal.toFixed(2) %></strong>
+      </div>
+    </div>
+    <% }); %>
+
+    <div class="flex-grow-1"></div>
+
+    <div class="cart-summary border-top pt-3">
+      <div class="d-flex justify-content-between mb-3">
+        <strong>Total:</strong>
+        <strong class="total-price">EGP <%= total.toFixed(2) %></strong>
+      </div>
+      <a href="/checkout" class="btn btn-primary w-100" id="checkout">
+        <i class="fas fa-credit-card me-2"></i>Proceed to Checkout
+      </a>
+    </div>
+
+    <% } else { %>
+    <div class="empty-cart text-center py-5">
+      <i class="fas fa-shopping-cart fa-3x mb-3 text-muted"></i>
+      <p class="text-muted">Your cart is empty.</p>
+      <a href="/" class="btn btn-outline-primary mt-3">
+        <i class="fas fa-shopping-bag me-2"></i>Start Shopping
+      </a>
+    </div>
+    <% } %>
+  </div>
+</div>
