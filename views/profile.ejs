@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BYJSM BookStore - My Profile</title>
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/main.css" />
+    <style>
+      .profile-nav .nav-link {
+        color: #2c3e50;
+        padding: 1rem;
+        border-radius: 0;
+        transition: all 0.3s ease;
+      }
+
+      .profile-nav .nav-link:hover {
+        background-color: #f8f9fa;
+      }
+
+      .profile-nav .nav-link.active {
+        background-color: #2c3e50;
+        color: white !important;
+      }
+
+      .profile-nav .nav-link i {
+        width: 20px;
+      }
+
+      .text-primary {
+        color: #2c3e50 !important;
+      }
+
+      .btn-primary {
+        background-color: #2c3e50;
+        border-color: #2c3e50;
+      }
+
+      .btn-primary:hover {
+        background-color: #34495e;
+        border-color: #34495e;
+      }
+
+      .btn-outline-primary {
+        color: #2c3e50;
+        border-color: #2c3e50;
+      }
+
+      .btn-outline-primary:hover {
+        background-color: #2c3e50;
+        border-color: #2c3e50;
+        color: white;
+      }
+
+      .border-bottom {
+        border-color: #e9ecef !important;
+      }
+
+      .badge.bg-success {
+        background-color: #27ae60 !important;
+      }
+
+      .badge.bg-info {
+        background-color: #3498db !important;
+      }
+
+      .badge.bg-secondary {
+        background-color: #95a5a6 !important;
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <%- include('partials/navbar') %>
+
+    <!-- Profile Header -->
+    <div class="profile-header py-5">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-3 text-center">
+            <div class="profile-avatar mb-3">
+              <i class="fas fa-user-circle fa-6x text-primary"></i>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <h1 class="profile-name mb-2"><%= user.name %></h1>
+            <p class="profile-email text-muted mb-3">
+              <i class="fas fa-envelope me-2"></i><%= user.email %>
+            </p>
+            <div class="profile-stats d-flex gap-4">
+              <div class="stat-item">
+                <h4 class="mb-0"><%= orders.length %></h4>
+                <small class="text-muted">Total Orders</small>
+              </div>
+              <div class="stat-item">
+                <h4 class="mb-0">
+                  $<%= orders.reduce((sum, order) => sum + order.totalAmount,
+                  0).toFixed(2) %>
+                </h4>
+                <small class="text-muted">Total Spent</small>
+              </div>
+              <div class="stat-item">
+                <h4 class="mb-0">
+                  <%= new Date(user.createdAt).toLocaleDateString() %>
+                </h4>
+                <small class="text-muted">Member Since</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="container py-5">
+      <div class="row">
+        <!-- Sidebar Navigation -->
+        <div class="col-md-3">
+          <div class="profile-nav card shadow-sm mb-4">
+            <div class="card-body p-0">
+              <div class="nav flex-column nav-pills">
+                <button
+                  class="nav-link active"
+                  data-bs-toggle="pill"
+                  data-bs-target="#orders"
+                >
+                  <i class="fas fa-shopping-bag me-2"></i>My Orders
+                </button>
+                <button
+                  class="nav-link"
+                  data-bs-toggle="pill"
+                  data-bs-target="#wishlist"
+                >
+                  <i class="fas fa-heart me-2"></i>Wishlist
+                </button>
+                <button
+                  class="nav-link"
+                  data-bs-toggle="pill"
+                  data-bs-target="#settings"
+                >
+                  <i class="fas fa-cog me-2"></i>Account Settings
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+          <div class="tab-content">
+            <!-- Orders Tab -->
+            <div class="tab-pane fade show active" id="orders">
+              <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                  <h5 class="card-title mb-0">
+                    <i class="fas fa-shopping-bag me-2 text-primary"></i>Order
+                    History
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <% if (orders.length === 0) { %>
+                  <div class="text-center py-5">
+                    <i class="fas fa-shopping-bag fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">You haven't placed any orders yet.</p>
+                    <a href="/" class="btn btn-primary">
+                      <i class="fas fa-shopping-cart me-2"></i>Start Shopping
+                    </a>
+                  </div>
+                  <% } else { %> <% orders.forEach((order, index) => { %>
+                  <div class="order-card mb-5 pb-4 border-bottom">
+                    <div
+                      class="order-header d-flex justify-content-between align-items-center p-3 bg-light rounded"
+                    >
+                      <div>
+                        <h6 class="mb-1">
+                          Order #<%= order._id.toString().slice(-6) %>
+                        </h6>
+                        <small class="text-muted">
+                          <i class="fas fa-calendar me-1"></i>
+                          <%= order.createdAt.toLocaleDateString() %>
+                        </small>
+                      </div>
+                      <div class="text-end">
+                        <span
+                          class="badge bg-<%= order.status === 'delivered' ? 'success' : order.status === 'shipped' ? 'info' : 'secondary' %>"
+                        >
+                          <%= order.status.charAt(0).toUpperCase() +
+                          order.status.slice(1) %>
+                        </span>
+                        <h6 class="mt-2 mb-0">
+                          $<%= order.totalAmount.toFixed(2) %>
+                        </h6>
+                      </div>
+                    </div>
+
+                    <div class="order-details p-3">
+                      <!-- Order Summary -->
+                      <div class="row mb-4">
+                        <div class="col-md-4">
+                          <div class="order-info-card">
+                            <h6 class="text-muted mb-2">Order Summary</h6>
+                            <div class="d-flex justify-content-between mb-1">
+                              <span>Items Total:</span>
+                              <strong>$<%= order.items.reduce((sum, item) => {
+                                if (!item.book || typeof item.book.price === 'undefined') return sum;
+                                return sum + (item.book.price * item.quantity);
+                              }, 0).toFixed(2) %></strong>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                              <span>Shipping:</span>
+                              <strong>$<%= (order.totalAmount - order.items.reduce((sum, item) => {
+                                if (!item.book || typeof item.book.price === 'undefined') return sum;
+                                return sum + (item.book.price * item.quantity);
+                              }, 0)).toFixed(2) %></strong>
+                            </div>
+                            <div class="d-flex justify-content-between pt-2 border-top">
+                              <span>Total:</span>
+                              <strong class="text-primary">$<%= order.totalAmount.toFixed(2) %></strong>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="order-info-card">
+                            <h6 class="text-muted mb-2">Payment Method</h6>
+                            <p class="mb-0">
+                              <i class="fas fa-credit-card me-2"></i>
+                              <%= order.paymentMethod || 'Credit Card' %>
+                            </p>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="order-info-card">
+                            <h6 class="text-muted mb-2">Shipping Address</h6>
+                            <p class="mb-0">
+                              <i class="fas fa-map-marker-alt me-2"></i>
+                              <%= order.shippingAddress || '123 Book Street, Reading City' %>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Order Items -->
+                      <h6 class="mb-3">Order Items</h6>
+                      <div class="order-items">
+                        <% order.items.forEach(item => { %>
+                        <div class="order-item d-flex align-items-center mb-3 p-3 bg-light rounded">
+                          <img
+                            src="<%= item.book ? item.book.image : '/images/default-book.jpg' %>"
+                            alt="<%= item.book ? item.book.title : 'Book' %>"
+                            class="order-item-image me-3"
+                          />
+                          <div class="flex-grow-1">
+                            <h6 class="mb-1"><%= item.book ? item.book.title : 'Book' %></h6>
+                            <small class="text-muted"
+                              >by <%= item.book ? item.book.author : 'Author' %></small
+                            >
+                            <div class="mt-2 d-flex justify-content-between align-items-center">
+                              <div>
+                                <span class="text-muted">Quantity: </span>
+                                <strong><%= item.quantity %></strong>
+                                <span class="text-muted ms-3">Price: </span>
+                                <strong>EGP <%= item.book ? item.book.price.toFixed(2) : '0.00' %></strong>
+                              </div>
+                              <div class="text-end">
+                                <span class="text-muted">Subtotal: </span>
+                                <strong class="text-primary">EGP <%= item.book ? (item.book.price * item.quantity).toFixed(2) : '0.00' %></strong>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <% }) %>
+                      </div>
+
+                      <!-- Order Actions -->
+                      <div class="order-actions mt-4 d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-primary btn-sm">
+                          <i class="fas fa-print me-2"></i>Print Invoice
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm">
+                          <i class="fas fa-truck me-2"></i>Track Order
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm">
+                          <i class="fas fa-redo me-2"></i>Reorder
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <% }) %> <% } %>
+                </div>
+              </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-pane fade" id="settings">
+              <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                  <h5 class="card-title mb-0">
+                    <i class="fas fa-cog me-2 text-primary"></i>Account Settings
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <form id="profileForm">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          value="<%= user.name %>"
+                        />
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input
+                          type="email"
+                          class="form-control"
+                          value="<%= user.email %>"
+                          readonly
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <h6 class="mb-3">Change Password</h6>
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label">Current Password</label>
+                        <input type="password" class="form-control" />
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label">New Password</label>
+                        <input type="password" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="text-end">
+                      <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Save Changes
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Wishlist Tab -->
+            <div class="tab-pane fade" id="wishlist">
+              <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                  <h5 class="card-title mb-0">
+                    <i class="fas fa-heart me-2 text-primary"></i>My Wishlist
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <% if (!wishlist || wishlist.length === 0) { %>
+                    <div class="text-center py-5">
+                      <i class="fas fa-heart fa-3x text-muted mb-3"></i>
+                      <p class="text-muted">Your wishlist is empty.</p>
+                      <a href="/" class="btn btn-primary">
+                        <i class="fas fa-shopping-cart me-2"></i>Browse Books
+                      </a>
+                    </div>
+                  <% } else { %>
+                    <div class="row">
+                      <% wishlist.forEach(book => { %>
+                        <div class="col-md-6 mb-4">
+                          <div class="card h-100">
+                            <div class="row g-0">
+                              <div class="col-4">
+                                <img src="<%= book.image %>" class="img-fluid rounded-start h-100 object-fit-cover" alt="<%= book.title %>">
+                              </div>
+                              <div class="col-8">
+                                <div class="card-body">
+                                  <h5 class="card-title"><%= book.title %></h5>
+                                  <p class="card-text text-muted">by <%= book.author %></p>
+                                  <p class="card-text">
+                                    <strong class="text-primary">EGP <%= book.price.toFixed(2) %></strong>
+                                  </p>
+                                  <div class="d-flex gap-2">
+                                    <button class="btn btn-outline-danger btn-sm" onclick="removeFromWishlist('<%= book._id %>')">
+                                      <i class="fas fa-trash me-2"></i>Remove
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      <% }) %>
+                    </div>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+      async function removeFromWishlist(bookId) {
+        try {
+          const res = await fetch(`/api/user/wishlist/${bookId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          });
+
+          const data = await res.json();
+
+          if (res.ok) {
+            alert("Book removed from wishlist!");
+            window.location.reload();
+          } else {
+            alert("Error: " + data.error);
+          }
+        } catch (err) {
+          console.error("Wishlist error:", err);
+          alert("Something went wrong while removing from wishlist.");
+        }
+      }
+    </script>
+  </body>
+</html>
