@@ -1,0 +1,291 @@
+<!-- Login Modal -->
+<div
+  class="modal fade"
+  id="loginModal"
+  tabindex="-1"
+  aria-labelledby="loginModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="loginModalLabel">
+          <i class="fas fa-sign-in-alt me-2"></i>Welcome Back
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="loginForm">
+          <div class="mb-3">
+            <label for="loginEmail" class="form-label">Email address</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <input
+                type="email"
+                class="form-control"
+                id="loginEmail"
+                required
+                placeholder="Enter your email"
+              />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="loginPassword" class="form-label">Password</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-lock"></i>
+              </span>
+              <input
+                type="password"
+                class="form-control"
+                id="loginPassword"
+                required
+                placeholder="Enter your password"
+              />
+            </div>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="rememberMe" />
+            <label class="form-check-label" for="rememberMe">Remember me</label>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">
+            <i class="fas fa-sign-in-alt me-2"></i>Login
+          </button>
+        </form>
+        <div class="text-center mt-3">
+          <p class="mb-0">
+            Don't have an account?
+            <a
+              href="#"
+              data-bs-toggle="modal"
+              data-bs-target="#signupModal"
+              data-bs-dismiss="modal"
+              class="text-primary"
+              >Sign up</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Signup Modal -->
+<div
+  class="modal fade"
+  id="signupModal"
+  tabindex="-1"
+  aria-labelledby="signupModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="signupModalLabel">
+          <i class="fas fa-user-plus me-2"></i>Create Account
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="signupForm">
+          <div class="mb-3">
+            <label for="signupName" class="form-label">Full Name</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-user"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control"
+                id="signupName"
+                required
+                placeholder="Enter your full name"
+              />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="signupEmail" class="form-label">Email address</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <input
+                type="email"
+                class="form-control"
+                id="signupEmail"
+                required
+                placeholder="Enter your email"
+              />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="signupPassword" class="form-label">Password</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-lock"></i>
+              </span>
+              <input
+                type="password"
+                class="form-control"
+                id="signupPassword"
+                required
+                placeholder="Create a password"
+              />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-lock"></i>
+              </span>
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPassword"
+                required
+                placeholder="Confirm your password"
+              />
+            </div>
+          </div>
+          <div class="mb-3 form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="agreeTerms"
+              required
+            />
+            <label class="form-check-label" for="agreeTerms">
+              I agree to the
+              <a href="/terms" class="text-primary">Terms of Service</a>
+              and
+              <a href="/privacy" class="text-primary">Privacy Policy</a>
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">
+            <i class="fas fa-user-plus me-2"></i>Create Account
+          </button>
+        </form>
+        <div class="text-center mt-3">
+          <p class="mb-0">
+            Already have an account?
+            <a
+              href="#"
+              data-bs-toggle="modal"
+              data-bs-target="#loginModal"
+              data-bs-dismiss="modal"
+              class="text-primary"
+              >Login</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document
+      .getElementById("loginForm")
+      .addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        try {
+          const response = await fetch("/api/user/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            alert("Login successful");
+            window.location.href = `/${data.role}`;
+          } else {
+            alert(data.errors);
+          }
+        } catch (error) {
+          console.error("Login error:", error);
+        }
+      });
+
+    document
+      .getElementById("signupForm")
+      .addEventListener("submit", async function (e) {
+        e.preventDefault();
+      
+        const name = document.getElementById("signupName").value;
+        const email = document.getElementById("signupEmail").value;
+        const password = document.getElementById("signupPassword").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+        // Validate name
+        if (name.trim().length < 2) {
+          alert("Name must be at least 2 characters long");
+          return;
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          alert("Please enter a valid email address");
+          return;
+        }
+
+        // Validate password
+        if (password.length < 6 || password.length > 18) {
+          alert("Password must be between 6 and 18 characters long");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          alert("Passwords do not match");
+          return;
+        }
+        const termsCheck = document.getElementById("agreeTerms").checked;
+        if (!termsCheck) {
+          alert("You must agree to the terms and conditions");
+          return;
+        }
+
+        try {
+          const response = await fetch("/api/user/signup", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name, email, password }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            alert("Signup successful");
+            window.location.href = "/";
+          } else {
+            alert(data.errors);
+          }
+        } catch (error) {
+          console.error("Signup error:", error);
+          alert("An error occurred while signing up. Please try again later.");
+        }
+      });
+  });
+</script>
