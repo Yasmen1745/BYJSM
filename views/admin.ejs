@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BYJSM BookStore - Admin Dashboard</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <style>
+      :root {
+        --primary-color: #5a0017;
+        --secondary-color: #3d000f;
+        --dark-maroon: #2a000a;
+        --light-maroon: #f5e6ea;
+        --accent-color: #7a1c2a;
+        --highlight: #9e3a4a;
+        --text-color: var(--dark-maroon);
+        --text-light: #636e72;
+        --light-bg: var(--light-maroon);
+        --gradient-primary: linear-gradient(135deg, #5a0017 0%, #7a1c2a 100%);
+        --gradient-secondary: linear-gradient(135deg, #3d000f 0%, #9e3a4a 100%);
+        --success-color: #22c55e;
+        --info-color: #3b82f6;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --dark-color: #1f2937;
+        --light-color: #f3f4f6;
+        --sidebar-width: 280px;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--light-bg);
+      }
+
+      .sidebar {
+        width: var(--sidebar-width);
+        min-height: 100vh;
+        background: var(--gradient-primary);
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .main-content {
+        margin-left: var(--sidebar-width);
+        padding: 2rem;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.8) !important;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        margin: 0.3rem 0;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white !important;
+        transform: translateX(5px);
+      }
+
+      .active-page {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        color: white !important;
+      }
+
+      .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: white;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+
+      .stat-card {
+        border-left: 4px solid;
+        padding: 1.5rem;
+      }
+
+      .stat-card.primary {
+        border-left-color: var(--primary-color);
+      }
+
+      .stat-card.success {
+        border-left-color: var(--success-color);
+      }
+
+      .stat-card.info {
+        border-left-color: var(--info-color);
+      }
+
+      .stat-card .icon {
+        font-size: 2rem;
+        opacity: 0.8;
+      }
+
+      .table {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .table thead th {
+        background-color: var(--light-maroon);
+        border-bottom: none;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        color: var(--text-color);
+      }
+
+      .btn {
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary {
+        background: var(--gradient-primary);
+        border: none;
+      }
+
+      .btn-primary:hover {
+        background: var(--gradient-secondary);
+        transform: translateY(-2px);
+      }
+
+      .modal-content {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        background: white;
+      }
+
+      .modal-header {
+        background: var(--gradient-primary);
+        color: white;
+        border-bottom: none;
+        border-radius: 15px 15px 0 0;
+        padding: 1.5rem;
+      }
+
+      .modal-title {
+        font-weight: 600;
+        font-size: 1.25rem;
+        color: white;
+      }
+
+      .modal-body {
+        padding: 1.5rem;
+      }
+
+      .modal-footer {
+        border-top: 1px solid var(--light-maroon);
+        padding: 1.5rem;
+        background-color: var(--light-bg);
+        border-radius: 0 0 15px 15px;
+      }
+
+      .modal .form-label {
+        color: var(--text-color);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+      }
+
+      .modal .form-control,
+      .modal .form-select {
+        border: 1px solid var(--light-maroon);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .modal .form-control:focus,
+      .modal .form-select:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.2rem rgba(122, 28, 42, 0.15);
+      }
+
+      .modal .btn-close {
+        filter: brightness(0) invert(1);
+        opacity: 0.8;
+        transition: all 0.3s ease;
+      }
+
+      .modal .btn-close:hover {
+        opacity: 1;
+        transform: rotate(90deg);
+      }
+
+      .modal .btn-secondary {
+        background: var(--light-maroon);
+        border: none;
+        color: var(--text-color);
+        font-weight: 500;
+      }
+
+      .modal .btn-secondary:hover {
+        background: var(--accent-color);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .modal .btn-primary {
+        background: var(--gradient-primary);
+        border: none;
+        font-weight: 500;
+      }
+
+      .modal .btn-primary:hover {
+        background: var(--gradient-secondary);
+        transform: translateY(-2px);
+      }
+
+      .modal .form-text {
+        color: var(--text-light);
+        font-size: 0.875rem;
+      }
+
+      /* Order Details Modal Specific Styles */
+      #orderDetailsModal .modal-body {
+        padding: 0;
+      }
+
+      #orderDetailsModal .order-info {
+        background: var(--light-bg);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+      }
+
+      #orderDetailsModal .order-info h6 {
+        color: var(--text-color);
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+
+      #orderDetailsModal .order-info p {
+        color: var(--text-light);
+        margin-bottom: 0.5rem;
+      }
+
+      #orderDetailsModal .table {
+        margin-bottom: 0;
+      }
+
+      #orderDetailsModal .table th {
+        background: var(--light-maroon);
+        color: var(--text-color);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+      }
+
+      #orderDetailsModal .table td {
+        vertical-align: middle;
+      }
+
+      #orderDetailsModal .badge {
+        padding: 0.5em 1em;
+        font-weight: 500;
+        border-radius: 6px;
+      }
+
+      #orderDetailsModal .badge.bg-success {
+        background: var(--success-color) !important;
+      }
+
+      #orderDetailsModal .badge.bg-info {
+        background: var(--info-color) !important;
+      }
+
+      #orderDetailsModal .badge.bg-warning {
+        background: var(--warning-color) !important;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 0;
+          transform: translateX(-100%);
+        }
+
+        .main-content {
+          margin-left: 0;
+        }
+
+        .sidebar.show {
+          width: var(--sidebar-width);
+          transform: translateX(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="d-flex flex-column h-100 px-4 py-4">
+          <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-book-open text-white fs-4 me-2"></i>
+            <span class="text-white fs-5 fw-bold">BSYJ Admin</span>
+          </div>
+          
+          <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+              <button class="nav-link px-0 align-middle text-white w-100" onclick="showPage('dashboard', this)">
+                <i class="fas fa-home fs-5 me-2"></i>
+                <span class="ms-1">Dashboard</span>
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link px-0 align-middle text-white w-100" onclick="showPage('users', this)">
+                <i class="fas fa-users fs-5 me-2"></i>
+                <span class="ms-1">Users</span>
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link px-0 align-middle text-white w-100" onclick="showPage('books', this)">
+                <i class="fas fa-book fs-5 me-2"></i>
+                <span class="ms-1">Books</span>
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link px-0 align-middle text-white w-100" onclick="showPage('orders', this)">
+                <i class="fas fa-shopping-cart fs-5 me-2"></i>
+                <span class="ms-1">Orders</span>
+              </button>
+            </li>
+          </ul>
+
+          <div class="mt-auto">
+            <a href="/api/user/logout" class="d-flex align-items-center text-white text-decoration-none py-2">
+              <i class="fas fa-sign-out-alt fs-5 me-2"></i>
+              <span>Log out</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page-content">
+          <div class="page-header">
+            <h1>Dashboard Overview</h1>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-md-4">
+              <div class="card stat-card primary">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted mb-2">Total Users</h6>
+                      <h3 class="mb-0" id="totalUsers"><%= users.length %></h3>
+                    </div>
+                    <div class="icon text-primary">
+                      <i class="fas fa-users"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card stat-card success">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted mb-2">Total Books</h6>
+                      <h3 class="mb-0" id="totalBooks"><%= books.length %></h3>
+                    </div>
+                    <div class="icon text-success">
+                      <i class="fas fa-book"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card stat-card info">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="text-muted mb-2">Total Orders</h6>
+                      <h3 class="mb-0" id="totalOrders"><%= orders.length %></h3>
+                    </div>
+                    <div class="icon text-info">
+                      <i class="fas fa-shopping-cart"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dashboard Charts Section -->
+          <div class="row g-4 mt-4">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Monthly Overview</h5>
+                </div>
+                <div class="card-body">
+                  <div style="height: 300px;">
+                    <canvas id="monthlyChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Category Distribution</h5>
+                </div>
+                <div class="card-body">
+                  <div style="height: 300px;">
+                    <canvas id="categoryChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users Page -->
+        <div id="users-page" class="page-content" style="display: none">
+          <div class="page-header d-flex justify-content-between align-items-center">
+            <h1>User Management</h1>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+              <i class="fas fa-plus me-2"></i>Add New User
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table" id="usersTable">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="usersTableBody">
+                    <% users.forEach((user, index) => { %>
+                    <tr>
+                      <td><%= index + 1 %></td>
+                      <td>....<%= user._id.toString().slice(-5) %></td>
+                      <td><%= user.name %></td>
+                      <td><%= user.email %></td>
+                      <td>
+                        <span class="badge <%= user.role === 'admin' ? 'bg-success' : 'bg-primary' %>">
+                          <%= user.role %>
+                        </span>
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary me-1 edit-user" data-userId="<%= user._id %>">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <% if (user.role !== 'admin') { %>
+                        <button class="btn btn-sm btn-outline-danger delete-user" data-userId="<%= user._id %>">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                        <% } %>
+                      </td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Books Page -->
+        <div id="books-page" class="page-content" style="display: none">
+          <div class="page-header d-flex justify-content-between align-items-center">
+            <h1>Book Management</h1>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">
+              <i class="fas fa-plus me-2"></i>Add New Book
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table" id="booksTable">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>ID</th>
+                      <th>Title</th>
+                      <th>Author</th>
+                      <th>Price</th>
+                      <th>Stock</th>
+                      <th>Category</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="booksTableBody">
+                    <% books.forEach((book, index) => { %>
+                    <tr>
+                      <td><%= index + 1 %></td>
+                      <td>....<%= book._id.toString().slice(-5) %></td>
+                      <td><%= book.title %></td>
+                      <td><%= book.author %></td>
+                      <td>EGP <%= book.price %></td>
+                      <td><%= book.stock %></td>
+                      <td><%= book.category %></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary me-1 edit-book" data-bookId="<%= book._id %>">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger delete-book" data-bookId="<%= book._id %>">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Orders Page -->
+        <div id="orders-page" class="page-content" style="display: none">
+          <div class="page-header">
+            <h1>Order Management</h1>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table" id="ordersTable">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Order ID</th>
+                      <th>Customer</th>
+                      <th>Total Amount</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ordersTableBody">
+                    <% orders.forEach((order, index) => { %>
+                    <tr>
+                      <td><%= index + 1 %></td>
+                      <td>....<%= order._id.toString().slice(-5) %></td>
+                      <td><%= order.user ? order.user.name : 'Deleted User' %></td>
+                      <td>EGP <%= order.totalAmount %></td>
+                      <td>
+                        <select class="form-select form-select-sm status-select" data-orderId="<%= order._id %>">
+                          <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                          <option value="shipped" <%= order.status === 'shipped' ? 'selected' : '' %>>Shipped</option>
+                          <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
+                        </select>
+                      </td>
+                      <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary view-order" data-orderId="<%= order._id %>">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div
+      class="modal fade"
+      id="addUserModal"
+      tabindex="-1"
+      aria-labelledby="addUserModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addUserForm">
+              <div class="mb-3">
+                <label for="userName" class="form-label">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="userName"
+                  name="name"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="userEmail" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="userEmail"
+                  name="email"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="userPassword" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="userPassword"
+                  name="password"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="userRole" class="form-label">Role</label>
+                <select
+                  class="form-select"
+                  id="userRole"
+                  name="role"
+                  required
+                >
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" form="addUserForm" class="btn btn-primary">
+              Add User
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Book Modal -->
+    <div
+      class="modal fade"
+      id="addBookModal"
+      tabindex="-1"
+      aria-labelledby="addBookModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addBookModalLabel">Add New Book</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form
+              class="needs-validation"
+              id="addBookForm"
+              enctype="multipart/form-data"
+              novalidate
+            >
+              <div class="mb-3">
+                <label for="bookTitle" class="form-label">Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="bookTitle"
+                  name="title"
+                  required
+                  maxlength="100"
+                  minlength="1"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="bookAuthor" class="form-label">Author</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="bookAuthor"
+                  name="author"
+                  maxlength="100"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="bookISBN" class="form-label">Price</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="bookISBN"
+                  name="price"
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="bookStock" class="form-label">Stock</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="bookStock"
+                  name="stock"
+                  min="0"
+                  step="1"
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="bookDescription" class="form-label"
+                  >Description</label
+                >
+                <textarea
+                  class="form-control"
+                  id="bookDescription"
+                  name="description"
+                  rows="3"
+                  maxlength="1000"
+                ></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="bookCategory" class="form-label">Category</label>
+                <select
+                  class="form-select"
+                  id="bookCategory"
+                  name="category"
+                  required
+                >
+                  <option value="">Select Category</option>
+                  <option value="Fiction">Fiction</option>
+                  <option value="Science">Science</option>
+                  <option value="Biography">Biography</option>
+                  <option value="Fantasy">Fantasy</option>
+                  <option value="Romance">Romance</option>
+                  <option value="Mystery">Mystery</option>
+                  <option value="History">History</option>
+                  <option value="Horror">Horror</option>
+                  <option value="Self-help">Self-help</option>
+                  <option value="Children">Children</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Business">Business</option>
+                  <option value="Islam">Islam</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="bookImage" class="form-label"
+                  >Book Cover Image</label
+                >
+                <input
+                  type="file"
+                  class="form-control"
+                  id="bookImage"
+                  name="image"
+                  accept="image/jpeg,image/png,image/gif"
+                  required
+                />
+                <div class="form-text">
+                  Upload a cover image (JPG, PNG, or GIF)
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" form="addBookForm" class="btn btn-primary">
+              Add Book
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editUserForm">
+              <input type="hidden" id="editUserId" name="userId">
+              <div class="mb-3">
+                <label for="editUserName" class="form-label">Name</label>
+                <input type="text" class="form-control" id="editUserName" name="name" required>
+              </div>
+              <div class="mb-3">
+                <label for="editUserEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="editUserEmail" name="email" required>
+              </div>
+              <div class="mb-3">
+                <label for="editUserRole" class="form-label">Role</label>
+                <select class="form-select" id="editUserRole" name="role" required>
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" form="editUserForm" class="btn btn-primary">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Book Modal -->
+    <div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editBookModalLabel">Edit Book</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editBookForm" enctype="multipart/form-data">
+              <input type="hidden" id="editBookId" name="bookId">
+              <div class="mb-3">
+                <label for="editBookTitle" class="form-label">Title</label>
+                <input type="text" class="form-control" id="editBookTitle" name="title" required maxlength="100">
+              </div>
+              <div class="mb-3">
+                <label for="editBookAuthor" class="form-label">Author</label>
+                <input type="text" class="form-control" id="editBookAuthor" name="author" maxlength="100">
+              </div>
+              <div class="mb-3">
+                <label for="editBookPrice" class="form-label">Price</label>
+                <input type="number" class="form-control" id="editBookPrice" name="price" required>
+              </div>
+              <div class="mb-3">
+                <label for="editBookStock" class="form-label">Stock</label>
+                <input type="number" class="form-control" id="editBookStock" name="stock" min="0" step="1" required>
+              </div>
+              <div class="mb-3">
+                <label for="editBookDescription" class="form-label">Description</label>
+                <textarea class="form-control" id="editBookDescription" name="description" rows="3" maxlength="1000"></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="editBookCategory" class="form-label">Category</label>
+                <select class="form-select" id="editBookCategory" name="category" required>
+                  <option value="">Select Category</option>
+                  <option value="Fiction">Fiction</option>
+                  <option value="Science">Science</option>
+                  <option value="Biography">Biography</option>
+                  <option value="Fantasy">Fantasy</option>
+                  <option value="Romance">Romance</option>
+                  <option value="Mystery">Mystery</option>
+                  <option value="History">History</option>
+                  <option value="Horror">Horror</option>
+                  <option value="Self-help">Self-help</option>
+                  <option value="Children">Children</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Business">Business</option>
+                  <option value="Islam">Islam</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="editBookImage" class="form-label">Book Cover Image</label>
+                <input type="file" class="form-control" id="editBookImage" name="image" accept="image/jpeg,image/png,image/gif">
+                <div class="form-text">Upload a new cover image (JPG, PNG, or GIF) or leave empty to keep current image</div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" form="editBookForm" class="btn btn-primary">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Refresh authentication token
+      async function refreshAuthToken() {
+        try {
+          const response = await fetch('/api/user/refresh', {
+            method: 'POST',
+            credentials: 'include'
+          });
+
+          if (response.ok) {
+            console.log('Token refreshed successfully');
+            return true;
+          } else {
+            console.log('Token refresh failed');
+            window.location.href = '/'; // Redirect to login on refresh failure
+            return false;
+          }
+        } catch (error) {
+          console.error('Token refresh error:', error);
+          window.location.href = '/'; // Redirect to login on error
+          return false;
+        }
+      }
+
+      // Check authentication status
+      async function checkAuthStatus() {
+        try {
+          const response = await fetch('/api/dashboard/stats', {
+            method: 'HEAD',
+            credentials: 'include'
+          });
+
+          if (response.ok) {
+            return true;
+          } else if (response.status === 401) {
+            // Try to refresh token
+            console.log('Authentication failed, attempting token refresh...');
+            const refreshed = await refreshAuthToken();
+            if (refreshed) {
+              // Try the original request again
+              const retryResponse = await fetch('/api/dashboard/stats', {
+                method: 'HEAD',
+                credentials: 'include'
+              });
+              return retryResponse.ok;
+            }
+          }
+          return false;
+        } catch (error) {
+          console.error('Auth check error:', error);
+          return false;
+        }
+      }
+
+      // Enhanced fetch with automatic token refresh
+      async function authenticatedFetch(url, options = {}) {
+        try {
+          // First attempt
+          let response = await fetch(url, {
+            ...options,
+            credentials: 'include'
+          });
+
+          // If unauthorized, try to refresh token
+          if (response.status === 401) {
+            const refreshed = await refreshAuthToken();
+            if (refreshed) {
+              // Retry the original request
+              response = await fetch(url, {
+                ...options,
+                credentials: 'include'
+              });
+            }
+          }
+
+          return response;
+        } catch (error) {
+          console.error('Fetch error:', error);
+          throw error;
+        }
+      }
+
+      // Set up periodic token refresh (every 12 hours)
+      const REFRESH_INTERVAL = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+      
+      // Initial token refresh check
+      setTimeout(refreshAuthToken, REFRESH_INTERVAL);
+      
+      // Set up periodic refresh
+      setInterval(refreshAuthToken, REFRESH_INTERVAL);
+
+      // Add error handler for all fetch requests
+      window.addEventListener('unhandledrejection', function(event) {
+        if (event.reason.name === 'TypeError' && event.reason.message.includes('Failed to fetch')) {
+          console.log('Network error detected, attempting to refresh token...');
+          refreshAuthToken();
+        }
+      });
+
+      // Page navigation
+      function showPage(pageId, element) {
+        document.querySelectorAll(".page-content").forEach((page) => {
+          page.style.display = "none";
+        });
+        document.querySelectorAll(".sidebar .nav-link").forEach((link) => {
+          link.classList.remove("active-page");
+        });
+        document.getElementById(pageId + "-page").style.display = "block";
+        if (element) {
+          element.classList.add("active-page");
+        }
+        if (pageId === "dashboard") {
+          updateDashboardStats();
+        }
+      }
+    </script>
+
+    <script>
+      document
+        .getElementById("addUserForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const formData = new FormData(this);
+          const userData = {
+            name: formData.get("name"),
+            email: formData.get("email"),
+            password: formData.get("password"),
+            role: formData.get("role"),
+          };
+
+          // Basic validation
+          if (!userData.name || !userData.email || !userData.password) {
+            alert("Please fill in all required fields");
+            return;
+          }
+
+          // Email validation
+          const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+          if (!emailRegex.test(userData.email)) {
+            alert("Please enter a valid email address");
+            return;
+          }
+
+          // Password validation
+          if (userData.password.length < 6) {
+            alert("Password must be at least 6 characters long");
+            return;
+          }
+
+          // Send to backend
+          const response = await fetch("/api/user/signup", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
+          });
+          const data = await response.json();
+
+          if (response.ok) {
+            alert("User added successfully");
+            location.reload(); // Refresh to show new user
+          } else {
+            alert(data.errors || "Error adding user");
+          }
+        });
+
+      document.querySelectorAll(".delete-user").forEach((button) => {
+        button.addEventListener("click", async function (e) {
+          e.preventDefault();
+          const userId = this.getAttribute("data-userId");
+          if (!confirm("Are you sure you want to delete this user?")) return;
+          const response = await fetch(`/api/user/${userId}`, {
+            method: "DELETE",
+            credentials: 'include',
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const data = await response.json();
+          if (response.ok) {
+            alert("User deleted successfully");
+            location.reload();
+          } else {
+            alert(data.errors || "Error deleting user");
+          }
+        });
+      });
+    </script>
+
+    <script>
+      document
+        .getElementById("addBookForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          // Check authentication first
+          const isAuthenticated = await checkAuthStatus();
+          if (!isAuthenticated) {
+            alert('Your session has expired. Please refresh the page and log in again.');
+            return;
+          }
+
+          const formData = new FormData(this);
+
+          // Basic validation
+          if (
+            !formData.get("title") ||
+            !formData.get("price") ||
+            !formData.get("stock") ||
+            !formData.get("category")
+          ) {
+            alert("Please fill in all required fields");
+            return;
+          }
+
+          // Send to backend
+          console.log('Sending POST request to: /api/book');
+          console.log('Cookies:', document.cookie);
+          const response = await authenticatedFetch("/api/book", {
+            method: "POST",
+            body: formData, // Send FormData directly without converting to JSON
+          });
+
+          // Check if response is JSON
+          const contentType = response.headers.get('content-type');
+          let data;
+
+          if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
+          } else {
+            const responseText = await response.text();
+            console.error('Non-JSON response received:', responseText);
+            alert('Server returned an unexpected response format. Please check your authentication and try again.');
+            return;
+          }
+
+          if (response.ok) {
+            alert("Book added successfully");
+            location.reload(); // Refresh to show new book
+          } else {
+            // Handle different types of errors
+            if (response.status === 401) {
+              alert('Authentication failed. Please log in again.');
+            } else if (response.status === 403) {
+              alert('Access denied. You do not have permission to perform this action.');
+            } else if (data.errors && Array.isArray(data.errors)) {
+              alert(data.errors.map(err => err.msg || err).join(', '));
+            } else {
+              alert(data.message || data.errors || "Error adding book");
+            }
+          }
+        });
+    </script>
+
+    <script>
+      document.querySelectorAll(".delete-book").forEach((button) => {
+        button.addEventListener("click", async function (e) {
+          e.preventDefault();
+          const bookId = this.getAttribute("data-bookId");
+          if (!confirm("Are you sure you want to delete this book?")) return;
+          const response = await authenticatedFetch(`/api/book/${bookId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const data = await response.json();
+          if (response.ok) {
+            alert("Book deleted successfully");
+            location.reload();
+          } else {
+            alert(data.errors || "Error deleting book");
+          }
+        });
+      });
+    </script>
+
+    <script>
+      // Dashboard Statistics and Charts
+      async function updateDashboardStats() {
+        try {
+          // Show loading state
+          const totalUsersEl = document.getElementById("totalUsers");
+          const totalBooksEl = document.getElementById("totalBooks");
+          const totalOrdersEl = document.getElementById("totalOrders");
+
+          if (totalUsersEl) totalUsersEl.textContent = "Loading...";
+          if (totalBooksEl) totalBooksEl.textContent = "Loading...";
+          if (totalOrdersEl) totalOrdersEl.textContent = "Loading...";
+
+          // Fetch dashboard data
+          const response = await authenticatedFetch("/api/dashboard/stats");
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          // Update statistics cards
+          if (totalUsersEl) totalUsersEl.textContent = data.totalUsers || 0;
+          if (totalBooksEl) totalBooksEl.textContent = data.totalBooks || 0;
+          if (totalOrdersEl) totalOrdersEl.textContent = data.totalOrders || 0;
+
+          // Monthly Overview Chart
+          const monthlyChartEl = document.getElementById("monthlyChart");
+          if (monthlyChartEl) {
+            const monthlyCtx = monthlyChartEl.getContext("2d");
+            new Chart(monthlyCtx, {
+              type: "line",
+              data: {
+                labels: data.monthlyData?.labels || [],
+                datasets: [
+                  {
+                    label: "Orders",
+                    data: data.monthlyData?.orders || [],
+                    borderColor: "var(--primary-color)",
+                    backgroundColor: "rgba(90, 0, 23, 0.1)",
+                    tension: 0.1,
+                    fill: true,
+                  },
+                  {
+                    label: "Revenue ($)",
+                    data: data.monthlyData?.revenue || [],
+                    borderColor: "var(--success-color)",
+                    backgroundColor: "rgba(34, 197, 94, 0.1)",
+                    tension: 0.1,
+                    fill: true,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: true,
+                    position: 'top',
+                  },
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                  },
+                },
+              },
+            });
+          }
+
+          // Category Distribution Chart
+          const categoryChartEl = document.getElementById("categoryChart");
+          if (categoryChartEl) {
+            const categoryCtx = categoryChartEl.getContext("2d");
+            new Chart(categoryCtx, {
+              type: "doughnut",
+              data: {
+                labels: data.categoryData?.labels || [],
+                datasets: [
+                  {
+                    data: data.categoryData?.values || [],
+                    backgroundColor: [
+                      "var(--primary-color)",
+                      "var(--success-color)",
+                      "var(--info-color)",
+                      "var(--warning-color)",
+                      "var(--danger-color)",
+                      "var(--accent-color)",
+                      "var(--highlight)",
+                      "#6f42c1",
+                      "#fd7e14",
+                      "#20c997",
+                      "#6610f2",
+                      "#e83e8c",
+                      "#17a2b8",
+                    ],
+                    borderWidth: 2,
+                    borderColor: "#fff",
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: "bottom",
+                    labels: {
+                      padding: 20,
+                      usePointStyle: true,
+                    },
+                  },
+                },
+              },
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching dashboard data:", error);
+
+          // Show error state
+          const totalUsersEl = document.getElementById("totalUsers");
+          const totalBooksEl = document.getElementById("totalBooks");
+          const totalOrdersEl = document.getElementById("totalOrders");
+
+          if (totalUsersEl) totalUsersEl.textContent = "Error";
+          if (totalBooksEl) totalBooksEl.textContent = "Error";
+          if (totalOrdersEl) totalOrdersEl.textContent = "Error";
+
+          // Show user-friendly error message
+          console.warn("Dashboard statistics could not be loaded. Using static data from server.");
+        }
+      }
+
+      // Call updateDashboardStats when the page loads
+      document.addEventListener("DOMContentLoaded", async () => {
+        // Test authentication on page load
+        console.log('Page loaded, testing authentication...');
+        const isAuth = await window.testAuth();
+        if (!isAuth) {
+          console.warn('Authentication test failed on page load');
+        }
+
+        // Set up periodic token refresh (every 20 hours)
+        setInterval(async () => {
+          console.log('Performing periodic token refresh...');
+          await refreshAuthToken();
+        }, 20 * 60 * 60 * 1000); // 20 hours in milliseconds
+
+        // Set dashboard as active and show it
+        const dashboardButton = document.querySelector('button[onclick*="dashboard"]');
+        if (dashboardButton) {
+          dashboardButton.classList.add("active-page");
+        }
+        showPage("dashboard");
+      });
+    </script>
+
+    <script>
+      // Order Management Scripts
+      document.querySelectorAll('.view-order').forEach(button => {
+        button.addEventListener('click', async function(e) {
+          e.preventDefault();
+          const orderId = this.getAttribute('data-orderId');
+          
+          try {
+            const response = await fetch(`/api/order/${orderId}`, {
+              credentials: 'include'
+            });
+            if (!response.ok) {
+              throw new Error('Failed to fetch order details');
+            }
+            
+            const data = await response.json();
+            
+            // Create modal element
+            const modalHtml = `
+              <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row mb-3">
+                        <div class="col-md-6">
+                          <h6>Customer Information</h6>
+                          <p>Name: ${data.user?.name || 'N/A'}</p>
+                          <p>Email: ${data.user?.email || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-6">
+                          <h6>Order Information</h6>
+                          <p>Order ID: ${data._id || 'N/A'}</p>
+                          <p>Date: ${data.createdAt ? new Date(data.createdAt).toLocaleString() : 'N/A'}</p>
+                          <p>Status: <span class="badge ${data.status === 'delivered' ? 'bg-success' : data.status === 'shipped' ? 'bg-info' : 'bg-warning'}">${data.status || 'N/A'}</span></p>
+                        </div>
+                      </div>
+                      <h6>Order Items</h6>
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Book</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${data.items ? data.items.map(item => `
+                            <tr>
+                              <td>${item.book?.title || 'N/A'}</td>
+                              <td>EGP ${item.book?.price || 0}</td>
+                              <td>${item.quantity || 0}</td>
+                              <td>EGP ${((item.book?.price || 0) * (item.quantity || 0)).toFixed(2)}</td>
+                            </tr>
+                          `).join('') : '<tr><td colspan="4" class="text-center">No items found</td></tr>'}
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                            <td><strong>EGP ${data.totalAmount || 0}</strong></td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+
+            // Remove any existing modal
+            const existingModal = document.getElementById('orderDetailsModal');
+            if (existingModal) {
+              existingModal.remove();
+            }
+
+            // Add new modal to the document
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+            // Initialize and show the modal
+            const modalElement = document.getElementById('orderDetailsModal');
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+
+            // Clean up modal when it's hidden
+            modalElement.addEventListener('hidden.bs.modal', function () {
+              this.remove();
+            });
+
+          } catch (error) {
+            console.error('Error:', error);
+            alert('Error fetching order details. Please try again.');
+          }
+        });
+      });
+
+      // Add status update handler
+      document.querySelectorAll('.status-select').forEach(select => {
+        select.addEventListener('change', async function(e) {
+          const orderId = this.getAttribute('data-orderId');
+          const newStatus = this.value;
+          
+          try {
+            const response = await fetch(`/api/order/${orderId}/status`, {
+              method: 'PUT',
+              credentials: 'include',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ status: newStatus })
+            });
+            
+            if (!response.ok) {
+              throw new Error('Failed to update status');
+            }
+            
+            // Update the badge in the modal if it's open
+            const modal = document.getElementById('orderDetailsModal');
+            if (modal) {
+              const statusBadge = modal.querySelector('.badge');
+              if (statusBadge) {
+                statusBadge.textContent = newStatus;
+                statusBadge.className = `badge ${newStatus === 'delivered' ? 'bg-success' : newStatus === 'shipped' ? 'bg-info' : 'bg-warning'}`;
+              }
+            }
+            
+          } catch (error) {
+            console.error('Error:', error);
+            alert('Error updating order status. Please try again.');
+            // Reset the select to its previous value
+            this.value = this.getAttribute('data-original-value');
+          }
+        });
+      });
+
+      // Store original value when focus
+      document.querySelectorAll('.status-select').forEach(select => {
+        select.addEventListener('focus', function() {
+          this.setAttribute('data-original-value', this.value);
+        });
+      });
+    </script>
+
+    <script>
+      // Edit User Functionality
+      document.querySelectorAll('.edit-user').forEach(button => {
+        button.addEventListener('click', async function(e) {
+          e.preventDefault();
+          const userId = this.getAttribute('data-userId');
+          
+          try {
+            // Fetch user data
+            const response = await fetch(`/api/user/${userId}`, {
+              credentials: 'include'
+            });
+            if (!response.ok) {
+              throw new Error('Failed to fetch user data');
+            }
+            
+            const userData = await response.json();
+            
+            // Populate the edit form
+            document.getElementById('editUserId').value = userId;
+            document.getElementById('editUserName').value = userData.name;
+            document.getElementById('editUserEmail').value = userData.email;
+            document.getElementById('editUserRole').value = userData.role;
+            
+            // Show the modal
+            const editUserModal = new bootstrap.Modal(document.getElementById('editUserModal'));
+            editUserModal.show();
+            
+          } catch (error) {
+            console.error('Error:', error);
+            alert('Error fetching user data. Please try again.');
+          }
+        });
+      });
+
+      // Handle edit user form submission
+      document.getElementById('editUserForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const userId = document.getElementById('editUserId').value;
+        const formData = new FormData(this);
+        const userData = {
+          name: formData.get('name'),
+          email: formData.get('email'),
+          role: formData.get('role')
+        };
+
+        try {
+          const response = await fetch(`/api/user/${userId}`, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+          });
+
+          // Check if response is JSON
+          const contentType = response.headers.get('content-type');
+          let responseData;
+
+          if (contentType && contentType.includes('application/json')) {
+            responseData = await response.json();
+          } else {
+            const responseText = await response.text();
+            console.error('Non-JSON response received:', responseText);
+            throw new Error('Server returned an unexpected response format. Please check your authentication and try again.');
+          }
+
+          if (!response.ok) {
+            if (response.status === 401) {
+              throw new Error('Authentication failed. Please log in again.');
+            } else if (response.status === 403) {
+              throw new Error('Access denied. You do not have permission to perform this action.');
+            } else if (response.status === 404) {
+              throw new Error('User not found.');
+            } else if (responseData.errors && Array.isArray(responseData.errors)) {
+              throw new Error(responseData.errors.map(err => err.msg || err).join(', '));
+            } else {
+              throw new Error(responseData.message || 'Failed to update user');
+            }
+          }
+
+          alert('User updated successfully');
+          location.reload();
+        } catch (error) {
+          console.error('Error:', error);
+          alert(`Error updating user: ${error.message}`);
+        }
+      });
+
+      // Edit Book Functionality
+      document.querySelectorAll('.edit-book').forEach(button => {
+        button.addEventListener('click', async function(e) {
+          e.preventDefault();
+          const bookId = this.getAttribute('data-bookId');
+          console.log('Edit button clicked for book:', bookId);
+          
+          try {
+            // Fetch book data
+            const response = await authenticatedFetch(`/api/book/${bookId}`);
+            console.log('Fetch response:', response);
+            
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.message || 'Failed to fetch book data');
+            }
+            
+            const bookData = await response.json();
+            console.log('Book data received:', bookData);
+            
+            // Populate the edit form
+            document.getElementById('editBookId').value = bookId;
+            document.getElementById('editBookTitle').value = bookData.title || '';
+            document.getElementById('editBookAuthor').value = bookData.author || '';
+            document.getElementById('editBookPrice').value = bookData.price || '';
+            document.getElementById('editBookStock').value = bookData.stock || '';
+            document.getElementById('editBookDescription').value = bookData.description || '';
+            document.getElementById('editBookCategory').value = bookData.category || '';
+            
+            // Show the modal
+            const editBookModal = new bootstrap.Modal(document.getElementById('editBookModal'));
+            editBookModal.show();
+            
+          } catch (error) {
+            console.error('Error in edit book:', error);
+            alert(`Error fetching book data: ${error.message}`);
+          }
+        });
+      });
+
+      // Handle edit book form submission
+      document.getElementById('editBookForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        console.log('Edit book form submitted');
+
+        // Check authentication first
+        const isAuthenticated = await checkAuthStatus();
+        if (!isAuthenticated) {
+          alert('Your session has expired. Please refresh the page and log in again.');
+          return;
+        }
+
+        const bookId = document.getElementById('editBookId').value;
+        console.log('Book ID:', bookId);
+
+        const formData = new FormData(this);
+
+        try {
+          // Ensure the upload directory exists
+          const response = await authenticatedFetch(`/api/book/${bookId}`, {
+            method: 'PUT',
+            body: formData
+          });
+
+          // Check if response is JSON
+          const contentType = response.headers.get('content-type');
+          let responseData;
+
+          if (contentType && contentType.includes('application/json')) {
+            responseData = await response.json();
+          } else {
+            const responseText = await response.text();
+            console.error('Non-JSON response received:', responseText);
+            
+            if (responseText.includes('ENOENT')) {
+              throw new Error('Error saving image. Please try again.');
+            } else if (responseText.includes('<!DOCTYPE') || responseText.includes('<html')) {
+              throw new Error('Authentication failed. You may have been logged out. Please refresh the page and log in again.');
+            } else {
+              throw new Error('Server returned an unexpected response format. Please try again.');
+            }
+          }
+
+          if (!response.ok) {
+            if (response.status === 401) {
+              throw new Error('Authentication failed. Please log in again.');
+            } else if (response.status === 403) {
+              throw new Error('Access denied. You do not have permission to perform this action.');
+            } else if (response.status === 404) {
+              throw new Error('Book not found.');
+            } else if (responseData.errors && Array.isArray(responseData.errors)) {
+              throw new Error(responseData.errors.map(err => err.msg || err).join(', '));
+            } else {
+              throw new Error(responseData.message || 'Failed to update book');
+            }
+          }
+
+          alert('Book updated successfully');
+          location.reload();
+        } catch (error) {
+          console.error('Error updating book:', error);
+          alert(`Error updating book: ${error.message}`);
+        }
+      });
+    </script>
+  </body>
+</html>
