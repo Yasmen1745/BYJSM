@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= article.title %> - BYJSM BookStore Blog</title>
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/main.css" />
+    <style>
+      .article-header {
+        background-color: #f8f9fa;
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+      }
+      .article-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+      }
+      .article-meta {
+        color: #6c757d;
+        margin-bottom: 2rem;
+      }
+      .article-image {
+        max-height: 500px;
+        object-fit: cover;
+        width: 100%;
+        margin-bottom: 2rem;
+      }
+      .related-articles {
+        background-color: #f8f9fa;
+        padding: 3rem 0;
+        margin-top: 4rem;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('partials/navbar') %>
+
+    <article class="article-header">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center">
+            <h1 class="display-4 mb-3"><%= article.title %></h1>
+            <div class="article-meta">
+              <span><i class="fas fa-user me-2"></i><%= article.author %></span>
+              <span class="mx-3">|</span>
+              <span><i class="fas fa-calendar me-2"></i><%= article.date %></span>
+              <span class="mx-3">|</span>
+              <span><i class="fas fa-clock me-2"></i><%= article.readTime %> min read</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <img src="<%= article.image %>" alt="<%= article.title %>" class="article-image rounded">
+          
+          <div class="article-content">
+            <%- article.content %>
+          </div>
+
+          <div class="article-tags mt-5">
+            <% article.tags.forEach(tag => { %>
+              <a href="/blog/tag/<%= tag %>" class="btn btn-outline-secondary me-2 mb-2"><%= tag %></a>
+            <% }) %>
+          </div>
+
+          <div class="share-buttons mt-5">
+            <h5>Share this article:</h5>
+            <a href="#" class="btn btn-outline-primary me-2"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="btn btn-outline-info me-2"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="btn btn-outline-success me-2"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" class="btn btn-outline-danger"><i class="fab fa-pinterest"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="related-articles">
+      <div class="container">
+        <h2 class="text-center mb-4">Related Articles</h2>
+        <div class="row g-4">
+          <% relatedArticles.forEach(article => { %>
+            <div class="col-md-4">
+              <div class="card h-100">
+                <img src="<%= article.image %>" class="card-img-top" alt="<%= article.title %>">
+                <div class="card-body">
+                  <h5 class="card-title"><%= article.title %></h5>
+                  <p class="card-text"><%= article.excerpt %></p>
+                  <a href="/blog/<%= article.slug %>" class="btn btn-primary">Read More</a>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </section>
+
+    <%- include('partials/footer') %>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html> 
