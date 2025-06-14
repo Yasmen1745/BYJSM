@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BYJSM BookStore - Home</title>
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/main.css" />
+    <style>
+      .book-card {
+        position: relative;
+        transition: transform 0.3s ease;
+      }
+
+      .book-status {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+      }
+
+      .cart-status {
+        top: 10px;
+        right: 10px;
+        background-color: #28a745;
+        color: white;
+      }
+
+      .wishlist-status {
+        top: 10px;
+        left: 10px;
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .book-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .pagination {
+        margin-top: 2rem;
+      }
+      
+      .pagination .page-link {
+        color: #333;
+        border: 1px solid #dee2e6;
+        padding: 0.5rem 1rem;
+        margin: 0 0.2rem;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+      
+      .pagination .page-link:hover {
+        background-color: #f8f9fa;
+        color: #007bff;
+        border-color: #007bff;
+      }
+      
+      .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+      }
+      
+      .pagination .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #dee2e6;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('partials/navbar') %>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+            <h1 class="display-3 fw-bold">Welcome to BYJSM BookStore</h1>
+            <p class="lead fs-4">
+              Discover worlds within pages. Your perfect book awaits at BYJSM - where every story finds its reader. <br> Read with Heart. Read with BYJSM
+            </p>
+            <div class="d-flex gap-3">
+              <a href="#featured-books" class="btn btn-warning btn-lg px-5 py-3 rounded-pill">
+                Explore Our Collection
+              </a>
+              <a href="/about-us" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill">
+                Learn More
+              </a>
+            </div>
+            <div class="mt-5 d-flex align-items-center gap-4">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-book-open fa-2x me-3"></i>
+                <div>
+                  <h6 class="mb-0">10K+ Books</h6>
+                  <small>Curated Collection</small>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <i class="fas fa-users fa-2x me-3"></i>
+                <div>
+                  <h6 class="mb-0">5K+ Readers</h6>
+                  <small>Happy Community</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+            <div class="hero-image-wrapper">
+              <img src="/img/rhamely-rROGSHyCb9o-unsplash.jpg" alt="Book Collection" class="img-fluid hero-image" />
+              <div class="floating-element floating-1">
+                <i class="fas fa-book fa-2x"></i>
+              </div>
+              <div class="floating-element floating-2">
+                <i class="fas fa-star fa-2x"></i>
+              </div>
+              <div class="floating-element floating-3">
+                <i class="fas fa-heart fa-2x"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-indicator" onclick="scrollToBooks()">
+        <i class="fas fa-chevron-down fa-2x"></i>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+      <div class="container">
+        <h2 class="text-center mb-5" data-aos="fade-up">Why Choose BYJSM BookStore?</h2>
+        <div class="row g-4">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="feature-card text-center">
+              <i class="fas fa-book-open feature-icon"></i>
+              <h3 class="h4 mb-3">Vast Collection</h3>
+              <p class="text-muted">
+                Access thousands of books across various genres and categories.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-card text-center">
+              <i class="fas fa-truck feature-icon"></i>
+              <h3 class="h4 mb-3">Fast Delivery</h3>
+              <p class="text-muted">
+                Get your books delivered to your doorstep within 2-3 business
+                days.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-card text-center">
+              <i class="fas fa-headset feature-icon"></i>
+              <h3 class="h4 mb-3">24/7 Support</h3>
+              <p class="text-muted">
+                Our dedicated team is always ready to assist you with any
+                queries.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Books Section -->
+    <section class="featured-books py-5" id="featured-books">
+      <div class="container">
+        <h2 class="section-title">Explore Our Collection</h2>
+
+        <div class="row">
+          <!-- Filters Sidebar -->
+          <div class="col-lg-3">
+            <div class="filters-sidebar">
+              <h4 class="mb-3">Filters</h4>
+
+              <!-- Search Bar -->
+              <div class="mb-4">
+                <label class="form-label">Search</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="searchInput"
+                    placeholder="Search books..."
+                  />
+                </div>
+              </div>
+
+              <!-- Category Filter -->
+              <div class="mb-4">
+                <label class="form-label">Categories</label>
+                <select class="form-select" id="categoryFilter">
+                  <option value="all">All Categories</option>
+                  <option value="Fiction">Fiction</option>
+                  <option value="Science">Science</option>
+                  <option value="Biography">Biography</option>
+                  <option value="Fantasy">Fantasy</option>
+                  <option value="Romance">Romance</option>
+                  <option value="Mystery">Mystery</option>
+                  <option value="History">History</option>
+                  <option value="Horror">Horror</option>
+                  <option value="Self-help">Self-help</option>
+                  <option value="Children">Children</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Business">Business</option>
+                  <option value="Islam">Islam</option>
+                </select>
+              </div>
+
+              <!-- Price Range Filter -->
+              <div class="mb-4">
+                <label class="form-label">Price Range</label>
+                <div class="d-flex gap-2">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="minPrice"
+                    placeholder="Min"
+                    min="0"
+                  />
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="maxPrice"
+                    placeholder="Max"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              <!-- Sort Options -->
+              <div class="mb-4">
+                <label class="form-label">Sort By</label>
+                <select class="form-select" id="sortFilter">
+                  <option value="default">Default</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="name-asc">Name: A to Z</option>
+                  <option value="name-desc">Name: Z to A</option>
+                </select>
+              </div>
+
+              <!-- Clear Filters Button -->
+              <button
+                class="btn btn-outline-secondary w-100"
+                id="clearFiltersBtn"
+              >
+                <i class="fas fa-times me-1"></i>Clear Filters
+              </button>
+            </div>
+          </div>
+
+          <!-- Books Grid -->
+          <div class="col-lg-9">
+            <div class="row g-4" id="booksGrid">
+              <% books.forEach(book => { %>
+              <div class="col-lg-4 col-md-6 col-sm-6 book-item">
+                <div
+                  class="book-card"
+                  data-category="<%= book.category.toLowerCase() %>"
+                  data-title="<%= book.title.toLowerCase() %>"
+                  data-author="<%= book.author.toLowerCase() %>"
+                  data-price="<%= book.price %>"
+                >
+                  <span class="category-label"><%= book.category %></span>
+                  <% if (cartBookIds && cartBookIds.includes(book._id.toString())) { %>
+                    <div class="book-status cart-status">
+                      <i class="fas fa-shopping-cart"></i>
+                    </div>
+                  <% } %>
+                  <% if (wishlistBookIds && wishlistBookIds.includes(book._id.toString())) { %>
+                    <div class="book-status wishlist-status">
+                      <i class="fas fa-heart"></i>
+                    </div>
+                  <% } %>
+                  <img
+                    src="<%= book.image %>"
+                    alt="Book Cover"
+                    class="img-fluid"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title"><%= book.title %></h5>
+                    <p class="author text-muted">By <%= book.author %></p>
+                    <p class="price fw-bold text-primary">EGP <%= book.price %></p>
+                    <button
+                      class="btn btn-primary w-100"
+                      onclick="openBookModal('<%= book.title %>', '<%= book.author %>', '<%= book.category %>', '<%= book.price %>', '<%= book.image %>', '<%= book._id %>', '<%= book.description %>')"
+                    >
+                      <i class="fas fa-eye me-1"></i>View Details
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Books Page Navigation" class="mt-5">
+              <ul class="pagination justify-content-center">
+                <% if (currentPage > 1) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/?page=<%= currentPage - 1 %>" onclick="handlePagination(event, '<%= currentPage - 1 %>')">
+                      <i class="fas fa-chevron-left"></i>
+                    </a>
+                  </li>
+                <% } %>
+                
+                <% 
+                  let startPage = Math.max(1, currentPage - 2);
+                  let endPage = Math.min(totalPages, startPage + 4);
+                  if (endPage - startPage < 4) {
+                    startPage = Math.max(1, endPage - 4);
+                  }
+                %>
+
+                <% if (startPage > 1) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/?page=1" onclick="handlePagination(event, '1')">1</a>
+                  </li>
+                  <% if (startPage > 2) { %>
+                    <li class="page-item disabled">
+                      <span class="page-link">...</span>
+                    </li>
+                  <% } %>
+                <% } %>
+
+                <% for (let i = startPage; i <= endPage; i++) { %>
+                  <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                    <a class="page-link" href="/?page=<%= i %>" onclick="handlePagination(event, '<%= i %>')"><%= i %></a>
+                  </li>
+                <% } %>
+
+                <% if (endPage < totalPages) { %>
+                  <% if (endPage < totalPages - 1) { %>
+                    <li class="page-item disabled">
+                      <span class="page-link">...</span>
+                    </li>
+                  <% } %>
+                  <li class="page-item">
+                    <a class="page-link" href="/?page=<%= totalPages %>" onclick="handlePagination(event, '<%= totalPages %>')"><%= totalPages %></a>
+                  </li>
+                <% } %>
+
+                <% if (currentPage < totalPages) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/?page=<%= currentPage + 1 %>" onclick="handlePagination(event, '<%= currentPage + 1 %>')">
+                      <i class="fas fa-chevron-right"></i>
+                    </a>
+                  </li>
+                <% } %>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <!-- Testimonials Slider Section (3 at a time, auto sliding) -->
+    <section class="testimonials-section">
+      <div class="container">
+        <h2 class="text-center mb-5">What Our Readers Say</h2>
+        <div class="d-flex align-items-center justify-content-center">
+          <div class="flex-grow-1" style="max-width: 1100px;">
+            <div id="testimonialsAutoSlider" class="carousel slide" data-bs-ride="false">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="row g-4 justify-content-center">
+                    <div class="col-md-4">
+                      <div class="testimonial-card h-100">
+                        <p class="testimonial-text">
+                          "BYJSM BookStore has transformed my reading experience. The collection is amazing and the delivery is always on time!"
+                        </p>
+                        <p class="testimonial-author">- Mohamed Ahmed</p>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="testimonial-card h-100">
+                        <p class="testimonial-text">
+                          "I love how easy it is to find books in my favorite genres. The recommendations are spot on!"
+                        </p>
+                        <p class="testimonial-author">- Mostafa Gaber</p>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="testimonial-card h-100">
+                        <p class="testimonial-text">
+                          "I can trust them when it comes to reading clean books."
+                        </p>
+                        <p class="testimonial-author">- Layan Wael</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="row g-4 justify-content-center">
+                    <div class="col-md-4">
+                      <div class="testimonial-card h-100">
+                        <p class="testimonial-text">
+                          "A wonderful selection of books and a user-friendly website. I always find what I need!"
+                        </p>
+                        <p class="testimonial-author">- Sara Youssef</p>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="testimonial-card h-100">
+                        <p class="testimonial-text">
+                          "Fast shipping and great customer support. Highly recommended for all book lovers."
+                        </p>
+                        <p class="testimonial-author">- Ahmed Samir</p>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="testimonial-card h-100">
+                        <p class="testimonial-text">
+                          "The best online bookstore experience I've had. The staff really care about their customers."
+                        </p>
+                        <p class="testimonial-author">- Layla Hassan</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Indicators (optional) -->
+              <div class="carousel-indicators mt-4">
+                <button type="button" data-bs-target="#testimonialsAutoSlider" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Testimonial Group 1"></button>
+                <button type="button" data-bs-target="#testimonialsAutoSlider" data-bs-slide-to="1" aria-label="Testimonial Group 2"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8 text-center">
+            <h2 class="text-white mb-4">Stay Updated</h2>
+            <p class="text-white-50 mb-4">
+              Subscribe to our newsletter for the latest releases and exclusive
+              offers.
+            </p>
+            <form
+              class="newsletter-form"
+              onsubmit="return handleNewsletter(event)"
+            >
+              <div class="input-group">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="Enter your email"
+                  required
+                />
+                <button class="btn btn-warning" type="submit">Subscribe</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog-section">
+      <div class="container">
+        <h2 class="text-center mb-5">Latest from Our Blog</h2>
+        <div class="d-flex align-items-center justify-content-center">
+          <div class="flex-grow-1" style="max-width: 1100px;">
+            <div id="blogAutoSlider" class="carousel slide" data-bs-ride="false">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="row g-4 justify-content-center">
+                    <div class="col-md-4">
+                      <div class="blog-card h-100">
+                        <img
+                          src="https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                          alt="Reading Tips"
+                          class="img-fluid"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">10 Tips for Better Reading Habits</h5>
+                          <p class="card-text">
+                            Discover effective strategies to improve your reading habits
+                            and make the most of your reading time.
+                          </p>
+                          <a href="/blog/reading-tips" class="btn btn-primary">Read More</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="blog-card h-100">
+                        <img
+                          src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                          alt="Book Recommendations"
+                          class="img-fluid"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Summer Reading List 2024</h5>
+                          <p class="card-text">
+                            Explore our curated selection of must-read books for the
+                            summer season, perfect for beach days and lazy afternoons.
+                          </p>
+                          <a href="/blog/summer-reading-list" class="btn btn-primary">Read More</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="blog-card h-100">
+                        <img
+                          src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                          alt="Author Interview"
+                          class="img-fluid"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Author Spotlight: Rising Stars</h5>
+                          <p class="card-text">
+                            Meet the emerging authors who are making waves in the literary
+                            world with their fresh perspectives and unique voices.
+                          </p>
+                          <a href="/blog/author-spotlight" class="btn btn-primary">Read More</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="row g-4 justify-content-center">
+                    <div class="col-md-4">
+                      <div class="blog-card h-100">
+                        <img
+                          src="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                          alt="Book Reviews"
+                          class="img-fluid"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Book Review: The Silent Echo</h5>
+                          <p class="card-text">
+                            An in-depth analysis of this year's most talked-about thriller
+                            and why it's worth your time.
+                          </p>
+                          <a href="/blog/book-review-silent-echo" class="btn btn-primary">Read More</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="blog-card h-100">
+                        <img
+                          src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                          alt="Writing Tips"
+                          class="img-fluid"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Writing Tips for Aspiring Authors</h5>
+                          <p class="card-text">
+                            Expert advice on how to start your writing journey and
+                            develop your unique voice.
+                          </p>
+                          <a href="/blog/writing-tips" class="btn btn-primary">Read More</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="blog-card h-100">
+                        <img
+                          src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                          alt="Book Club"
+                          class="img-fluid"
+                        />
+                        <div class="card-body">
+                          <h5 class="card-title">Join Our Virtual Book Club</h5>
+                          <p class="card-text">
+                            Connect with fellow readers and discuss your favorite books
+                            in our monthly virtual book club meetings.
+                          </p>
+                          <a href="/blog/virtual-book-club" class="btn btn-primary">Read More</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Indicators -->
+              <div class="carousel-indicators mt-4">
+                <button type="button" data-bs-target="#blogAutoSlider" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Blog Group 1"></button>
+                <button type="button" data-bs-target="#blogAutoSlider" data-bs-slide-to="1" aria-label="Blog Group 2"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Book Modal -->
+    <div class="modal fade" id="bookModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-5">
+                <div class="book-image-container">
+                  <img
+                    id="modalBookImage"
+                    src=""
+                    alt="Book Cover"
+                    class="img-fluid rounded shadow"
+                  />
+                  <%if(user != null){%>
+                  <div class="book-actions mt-3">
+                    <button
+                      class="btn btn-primary w-100 mb-2"
+                      onclick="addToCart()"
+                    >
+                      <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                    </button>
+                    <button
+                      class="btn btn-outline-primary w-100"
+                      onclick="addToWishlist()"
+                    >
+                      <i class="fas fa-heart me-2"></i>Add to Wishlist
+                    </button>
+                  </div>
+                  <%}%>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <div class="book-details">
+                  <h2 id="modalTitle" class="mb-2"></h2>
+                  <p id="modalAuthor" class="text-muted mb-3"></p>
+                  <div class="book-meta mb-4">
+                    <span
+                      id="modalCategory"
+                      class="badge bg-secondary me-2"
+                    ></span>
+                    <span class="rating">
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star-half-alt text-warning"></i>
+                      <span class="ms-2">(4.5)</span>
+                    </span>
+                  </div>
+
+                  <div class="price-section mb-4">
+                    <h3 id="modalPrice" class="text-primary mb-0"></h3>
+                    <small class="text-muted">Inclusive of all taxes</small>
+                  </div>
+
+                  <div class="quantity-section mb-4">
+                    <label class="form-label">Quantity</label>
+                    <div class="quantity-selector d-flex align-items-center">
+                      <button
+                        class="btn btn-outline-secondary"
+                        onclick="updateQuantity(-1)"
+                      >
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      <input
+                        type="number"
+                        id="quantity"
+                        class="form-control mx-2"
+                        value="1"
+                        min="1"
+                        max="99"
+                        style="width: 80px"
+                      />
+                      <button
+                        class="btn btn-outline-secondary"
+                        onclick="updateQuantity(1)"
+                      >
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="total-section mb-4">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <span class="h5 mb-0">Total:</span>
+                      <span
+                        id="modalTotalPrice"
+                        class="h4 text-success mb-0"
+                      ></span>
+                    </div>
+                  </div>
+
+                  <div class="book-description">
+                    <h4 class="mb-3">About this book</h4>
+                    <p class="text-muted" id="modalDescription"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('partials/footer') %> <%- include('partials/auth-modals') %>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Scripts -->
+    <script>
+      // Wait for the DOM to be fully loaded
+      window.addEventListener("load", function () {
+        // Get all required elements
+        const searchInput = document.getElementById("searchInput");
+        const categoryFilter = document.getElementById("categoryFilter");
+        const minPrice = document.getElementById("minPrice");
+        const maxPrice = document.getElementById("maxPrice");
+        const sortFilter = document.getElementById("sortFilter");
+        const booksGrid = document.getElementById("booksGrid");
+        const clearFiltersBtn = document.getElementById("clearFiltersBtn");
+
+        // Only proceed if we have all required elements
+        if (!searchInput || !categoryFilter || !booksGrid || !clearFiltersBtn) {
+          console.error(
+            "Some required elements were not found. Please check the page structure."
+          );
+          return;
+        }
+
+        function filterAndSortBooks() {
+          const searchTerm = searchInput.value.toLowerCase().trim();
+          const selectedCategory = categoryFilter.value.toLowerCase();
+          const minPriceValue = parseFloat(minPrice.value) || 0;
+          const maxPriceValue = parseFloat(maxPrice.value) || Infinity;
+          const sortValue = sortFilter.value;
+          const books = Array.from(document.querySelectorAll(".book-card"));
+
+          // Filter books
+          const filteredBooks = books.filter((book) => {
+            const title = book.querySelector("h5").textContent.toLowerCase();
+            const author = book
+              .querySelector(".author")
+              .textContent.toLowerCase();
+            const category = book
+              .querySelector(".category-label")
+              .textContent.toLowerCase();
+            const bookCategory = book.dataset.category.toLowerCase();
+            const price = parseFloat(book.dataset.price);
+
+            const matchesSearch =
+              searchTerm === "" ||
+              title.includes(searchTerm) ||
+              author.includes(searchTerm) ||
+              category.includes(searchTerm);
+
+            const matchesCategory =
+              selectedCategory === "all" || bookCategory === selectedCategory;
+
+            const matchesPrice =
+              price >= minPriceValue && price <= maxPriceValue;
+
+            return matchesSearch && matchesCategory && matchesPrice;
+          });
+
+          // Sort books
+          filteredBooks.sort((a, b) => {
+            const titleA = a.querySelector("h5").textContent.toLowerCase();
+            const titleB = b.querySelector("h5").textContent.toLowerCase();
+            const priceA = parseFloat(a.dataset.price);
+            const priceB = parseFloat(b.dataset.price);
+
+            switch (sortValue) {
+              case "price-asc":
+                return priceA - priceB;
+              case "price-desc":
+                return priceB - priceA;
+              case "name-asc":
+                return titleA.localeCompare(titleB);
+              case "name-desc":
+                return titleB.localeCompare(titleA);
+              default:
+                return 0;
+            }
+          });
+
+          // Update visibility and order
+          const bookItems = document.querySelectorAll(".book-item");
+          bookItems.forEach((item) => (item.style.display = "none"));
+
+          filteredBooks.forEach((book) => {
+            const bookItem = book.closest(".book-item");
+            bookItem.style.display = "block";
+            booksGrid.appendChild(bookItem);
+          });
+
+          // Show "no results" message if needed
+          let noResultsMessage = document.getElementById("noResultsMessage");
+          if (filteredBooks.length === 0) {
+            if (!noResultsMessage) {
+              noResultsMessage = document.createElement("div");
+              noResultsMessage.id = "noResultsMessage";
+              noResultsMessage.className = "text-center my-4";
+              noResultsMessage.innerHTML = `
+                <h4>No books found</h4>
+                <p class="text-muted">Try adjusting your search or filter criteria</p>
+              `;
+              booksGrid.appendChild(noResultsMessage);
+            }
+          } else {
+            if (noResultsMessage) {
+              noResultsMessage.remove();
+            }
+          }
+        }
+
+        // Add event listeners
+        searchInput.addEventListener("input", filterAndSortBooks);
+        categoryFilter.addEventListener("change", filterAndSortBooks);
+        minPrice.addEventListener("input", filterAndSortBooks);
+        maxPrice.addEventListener("input", filterAndSortBooks);
+        sortFilter.addEventListener("change", filterAndSortBooks);
+
+        clearFiltersBtn.addEventListener("click", function () {
+          searchInput.value = "";
+          categoryFilter.value = "all";
+          minPrice.value = "";
+          maxPrice.value = "";
+          sortFilter.value = "default";
+          filterAndSortBooks();
+        });
+
+        // Initial filter to ensure proper state
+        filterAndSortBooks();
+      });
+
+      let currentPrice = 0;
+
+      // Smooth scroll function
+      function scrollToBooks() {
+        document.getElementById("featured-books").scrollIntoView({
+          behavior: "smooth",
+        });
+      }
+
+      // Category filtering
+      document.querySelectorAll(".dropdown-menu a").forEach((link) => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const category = this.getAttribute("href").replace("#", "");
+          filterAndSortBooks(category);
+          scrollToBooks();
+        });
+      });
+
+      function filterAndSortBooks(category) {
+        const books = document.querySelectorAll(".book-card");
+        books.forEach((book) => {
+          if (category === "all" || book.dataset.category === category) {
+            book.parentElement.style.display = "block";
+          } else {
+            book.parentElement.style.display = "none";
+          }
+        });
+      }
+
+      // Open book modal
+      function openBookModal(
+        title,
+        author,
+        category,
+        price,
+        image,
+        bookId,
+        description
+      ) {
+        document.getElementById("modalTitle").textContent = title;
+        document.getElementById("modalAuthor").textContent = "By " + author;
+        document.getElementById("modalCategory").textContent = category;
+        document.getElementById("modalPrice").textContent = price + "EGP";
+        document.getElementById("modalBookImage").src = image;
+        document.getElementById("modalDescription").textContent =
+          description || "No description available.";
+        document.getElementById("quantity").value = 1;
+
+        // Store bookId in modal
+        document.getElementById("bookModal").dataset.bookId = bookId;
+
+        currentPrice = parseFloat(price);
+        updateTotalPrice();
+
+        const modal = new bootstrap.Modal(document.getElementById("bookModal"));
+        modal.show();
+      }
+
+      // Update quantity
+      function updateQuantity(change) {
+        const quantityInput = document.getElementById("quantity");
+        let quantity = parseInt(quantityInput.value) + change;
+
+        if (quantity < 1) quantity = 1;
+        if (quantity > 99) quantity = 99;
+
+        quantityInput.value = quantity;
+        updateTotalPrice();
+      }
+
+      // Update total price
+      function updateTotalPrice() {
+        const quantity = parseInt(document.getElementById("quantity").value);
+        const total = (currentPrice * quantity).toFixed(2);
+        document.getElementById("modalTotalPrice").textContent = "EGP " + total;
+      }
+
+      // Add to cart function
+      async function addToCart() {
+        const title = document.getElementById("modalTitle").textContent;
+        const quantity = parseInt(document.getElementById("quantity").value);
+        const bookId = document.getElementById("bookModal").dataset.bookId;
+
+        if (!bookId) {
+          alert("Book ID is missing.");
+          return;
+        }
+
+        try {
+          const res = await fetch("/api/user/cart", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({ bookId, quantity }),
+          });
+
+          const data = await res.json();
+
+          if (res.ok) {
+            alert(`Added ${quantity} copy(ies) of "${title}" to cart!`);
+            window.location = "/";
+          } else {
+            alert("Error: " + data.error);
+          }
+        } catch (err) {
+          console.error("Cart error:", err);
+          alert("Something went wrong while adding to cart.");
+        }
+      }
+
+      // Add to wishlist function
+      async function addToWishlist() {
+        const bookId = document.getElementById("bookModal").dataset.bookId;
+
+        if (!bookId) {
+          alert("Book ID is missing.");
+          return;
+        }
+
+        try {
+          const res = await fetch(`/api/user/wishlist/${bookId}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          });
+
+          const data = await res.json();
+
+          if (res.ok) {
+            alert("Book added to wishlist!");
+            window.location = "/";
+          } else {
+            alert("Error: " + data.error);
+          }
+        } catch (err) {
+          console.error("Wishlist error:", err);
+          alert("Something went wrong while adding to wishlist.");
+        }
+      }
+
+      // Newsletter subscription
+      function handleNewsletter(event) {
+        event.preventDefault();
+        const input = event.target.querySelector("input");
+        const button = event.target.querySelector("button");
+        const originalHTML = button.innerHTML;
+
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        button.disabled = true;
+
+        setTimeout(() => {
+          alert("Thank you for subscribing to our newsletter!");
+          input.value = "";
+          button.innerHTML = originalHTML;
+          button.disabled = false;
+        }, 2000);
+
+        return false;
+      }
+
+      // Update quantity when input changes
+      document
+        .getElementById("quantity")
+        .addEventListener("change", updateTotalPrice);
+
+      function handlePagination(event, page) {
+        event.preventDefault();
+        
+        // Update URL without page refresh
+        const url = new URL(window.location.href);
+        url.searchParams.set('page', page);
+        window.history.pushState({}, '', url);
+        
+        // Fetch new page content
+        fetch(`/?page=${page}`, {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+        .then(response => response.text())
+        .then(html => {
+          // Create a temporary element to parse the HTML
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          
+          // Update the books grid
+          const newBooksGrid = doc.getElementById('booksGrid');
+          document.getElementById('booksGrid').innerHTML = newBooksGrid.innerHTML;
+          
+          // Update pagination
+          const newPagination = doc.querySelector('.pagination');
+          document.querySelector('.pagination').innerHTML = newPagination.innerHTML;
+          
+          // Scroll to books section
+          document.getElementById('featured-books').scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching new page:', error);
+          // Fallback to regular navigation if fetch fails
+          window.location.href = `/?page=${page}`;
+        });
+      }
+    </script>
+
+    <!-- Add AOS JS before closing body tag -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      // Initialize AOS
+      AOS.init({
+        once: true, // animations happen only once
+        offset: 100, // offset (in px) from the original trigger point
+        duration: 800, // values from 0 to 3000, with step 50ms
+      });
+    </script>
+    <script>
+      // Auto-slide testimonials every 5 seconds
+      document.addEventListener('DOMContentLoaded', function() {
+        var testimonialCarousel = document.getElementById('testimonialsAutoSlider');
+        var blogCarousel = document.getElementById('blogAutoSlider');
+        
+        if (testimonialCarousel) {
+          var bsTestimonialCarousel = bootstrap.Carousel.getOrCreateInstance(testimonialCarousel, { interval: false, ride: false });
+          setInterval(function() {
+            bsTestimonialCarousel.next();
+          }, 5000);
+        }
+
+        if (blogCarousel) {
+          var bsBlogCarousel = bootstrap.Carousel.getOrCreateInstance(blogCarousel, { interval: false, ride: false });
+          setInterval(function() {
+            bsBlogCarousel.next();
+          }, 5000);
+        }
+      });
+    </script>
+  </body>
+</html>

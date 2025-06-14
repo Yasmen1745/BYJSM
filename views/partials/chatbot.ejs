@@ -1,0 +1,512 @@
+<!-- Chatbot Toggle Button -->
+<button id="chatbot-toggle" class="chatbot-toggle-btn">
+  <i class="fas fa-comments"></i>
+  <span class="notification-badge"></span>
+</button>
+
+<!-- Chatbot Window -->
+<div id="chatbot-window" class="chatbot-window">
+  <div class="chatbot-header">
+    <div class="chatbot-title">
+      <i class="fas fa-robot"></i>
+      <span>BYJSM Assistant</span>
+    </div>
+    <button class="chatbot-close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
+  <div class="chatbot-messages">
+    <div class="message bot">
+      <div class="message-content">
+        <i class="fas fa-robot"></i>
+        <div class="message-text">
+          Hello! I'm your BYJSM assistant. How can I help you today?
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="chatbot-input">
+    <input type="text" id="chatbot-input-field" placeholder="Type your message...">
+    <button id="chatbot-send">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+</div>
+
+<style>
+  .chatbot-toggle-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #3498db;
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chatbot-toggle-btn i {
+    font-size: 1.5rem;
+  }
+
+  .chatbot-toggle-btn:hover {
+    transform: scale(1.1);
+    background: #2980b9;
+  }
+
+  .notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .chatbot-window {
+    position: fixed;
+    bottom: 5rem;
+    right: 2rem;
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    display: none;
+  }
+
+  .chatbot-window.active {
+    opacity: 1;
+    transform: translateY(0);
+    display: flex;
+  }
+
+  .chatbot-header {
+    padding: 1rem;
+    background: #3498db;
+    color: white;
+    border-radius: 1rem 1rem 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chatbot-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+  }
+
+  .chatbot-close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.25rem;
+  }
+
+  .chatbot-messages {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .message {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+  }
+
+  .message.bot {
+    align-self: flex-start;
+  }
+
+  .message.user {
+    align-self: flex-end;
+  }
+
+  .message-content {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .message.bot .message-content {
+    background: #f8f9fa;
+    padding: 0.75rem;
+    border-radius: 1rem 1rem 1rem 0;
+  }
+
+  .message.user .message-content {
+    background: #3498db;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 1rem 1rem 0 1rem;
+  }
+
+  .message-text {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .chatbot-input {
+    padding: 1rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  #chatbot-input-field {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 2rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  #chatbot-input-field:focus {
+    border-color: #3498db;
+  }
+
+  #chatbot-send {
+    background: #3498db;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #chatbot-send:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    .chatbot-window {
+      width: calc(100% - 2rem);
+      height: calc(100% - 8rem);
+      bottom: 5rem;
+      right: 1rem;
+    }
+  }
+
+  /* Add typing indicator styles */
+  .typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+  }
+
+  .typing-indicator span {
+    width: 8px;
+    height: 8px;
+    background: #3498db;
+    border-radius: 50%;
+    animation: typing 1s infinite ease-in-out;
+  }
+
+  .typing-indicator span:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  .typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes typing {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  /* Add styles for Markdown content */
+  .markdown-content {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+
+  .markdown-content h1 {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+    color: #2c3e50;
+  }
+
+  .markdown-content h2 {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+    color: #34495e;
+  }
+
+  .markdown-content h3 {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+    color: #2c3e50;
+  }
+
+  .markdown-content strong {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .markdown-content em {
+    font-style: italic;
+    color: #7f8c8d;
+  }
+
+  .markdown-content ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .markdown-content li {
+    margin: 0.25rem 0;
+  }
+
+  .markdown-content br {
+    margin: 0.5rem 0;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbotWindow = document.getElementById('chatbot-window');
+    const chatbotClose = document.querySelector('.chatbot-close');
+    const chatbotInput = document.getElementById('chatbot-input-field');
+    const chatbotSend = document.getElementById('chatbot-send');
+    const chatbotMessages = document.querySelector('.chatbot-messages');
+    const notificationBadge = document.querySelector('.notification-badge');
+
+    // Generate a unique user ID (you might want to use the actual user ID if available)
+    const userId = 'user_' + Math.random().toString(36).substr(2, 9);
+
+    // Book categories and scope information
+    const bookCategories = [
+      "Fiction",
+      "Non-fiction",
+      "Science",
+      "Biography",
+      "Children",
+      "History",
+      "Fantasy",
+      "Romance"
+    ];
+
+    // Function to check if query is within scope
+    function isWithinScope(message) {
+      const scopeKeywords = [
+        'book', 'books', 'library', 'read', 'reading', 'author', 'title',
+        'price', 'category', 'fiction', 'non-fiction', 'science', 'biography',
+        'children', 'history', 'fantasy', 'romance', 'purchase', 'buy',
+        'cart', 'wishlist', 'order', 'stock', 'available', 'description'
+      ];
+      
+      const lowerMessage = message.toLowerCase();
+      return scopeKeywords.some(keyword => lowerMessage.includes(keyword));
+    }
+
+    // Function to convert Markdown to HTML
+    function markdownToHtml(markdown) {
+      // Convert headers
+      markdown = markdown.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+      markdown = markdown.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+      markdown = markdown.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+      
+      // Convert bold
+      markdown = markdown.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      
+      // Convert italic
+      markdown = markdown.replace(/\*(.*?)\*/g, '<em>$1</em>');
+      
+      // Convert lists
+      markdown = markdown.replace(/^\d\. (.*$)/gm, '<li>$1</li>');
+      markdown = markdown.replace(/^- (.*$)/gm, '<li>$1</li>');
+      
+      // Wrap lists in ul/ol
+      markdown = markdown.replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>');
+      
+      // Convert line breaks
+      markdown = markdown.replace(/\n/g, '<br>');
+      
+      return markdown;
+    }
+
+    // Toggle chatbot window
+    chatbotToggle.addEventListener('click', () => {
+      chatbotWindow.classList.toggle('active');
+      notificationBadge.style.opacity = '0';
+    });
+
+    // Close chatbot window
+    chatbotClose.addEventListener('click', () => {
+      chatbotWindow.classList.remove('active');
+    });
+
+    // Send message
+    async function sendMessage() {
+      const message = chatbotInput.value.trim();
+      if (message) {
+        // Add user message
+        addMessage(message, 'user');
+        chatbotInput.value = '';
+
+        // Show typing indicator
+        const typingIndicator = addTypingIndicator();
+
+        try {
+          // Check if message is within scope
+          if (!isWithinScope(message)) {
+            typingIndicator.remove();
+            addMessage("I can only help you with questions about our book collection, categories, prices, and related services. Please ask me something about our books!", 'bot');
+            return;
+          }
+
+          // Send message to backend
+          const response = await fetch('/api/chatbot/message', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              message,
+              userId,
+              context: {
+                categories: bookCategories,
+                scope: "book store and library services"
+              }
+            }),
+          });
+
+          const data = await response.json();
+
+          // Remove typing indicator
+          typingIndicator.remove();
+
+          if (data.error) {
+            addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+            console.error('Chatbot error:', data.error);
+          } else {
+            addMessage(data.response, 'bot');
+          }
+        } catch (error) {
+          // Remove typing indicator
+          typingIndicator.remove();
+          
+          addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+          console.error('Chatbot error:', error);
+        }
+      }
+    }
+
+    // Add typing indicator
+    function addTypingIndicator() {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'message bot typing';
+      typingDiv.innerHTML = `
+        <div class="message-content">
+          <i class="fas fa-robot"></i>
+          <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      `;
+      chatbotMessages.appendChild(typingDiv);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      return typingDiv;
+    }
+
+    // Add message to chat
+    function addMessage(text, sender) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${sender}`;
+      
+      const content = document.createElement('div');
+      content.className = 'message-content';
+      
+      if (sender === 'bot') {
+        const icon = document.createElement('i');
+        icon.className = 'fas fa-robot';
+        content.appendChild(icon);
+        
+        // Convert Markdown to HTML for bot messages
+        const textDiv = document.createElement('div');
+        textDiv.className = 'message-text markdown-content';
+        textDiv.innerHTML = markdownToHtml(text);
+        content.appendChild(textDiv);
+      } else {
+        const textDiv = document.createElement('div');
+        textDiv.className = 'message-text';
+        textDiv.textContent = text;
+        content.appendChild(textDiv);
+      }
+      
+      messageDiv.appendChild(content);
+      chatbotMessages.appendChild(messageDiv);
+      
+      // Scroll to bottom
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    // Send message on button click
+    chatbotSend.addEventListener('click', sendMessage);
+
+    // Send message on Enter key
+    chatbotInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+
+    // Show notification badge after 5 seconds
+    setTimeout(() => {
+      notificationBadge.style.opacity = '1';
+      notificationBadge.textContent = '1';
+    }, 5000);
+  });
+</script>
