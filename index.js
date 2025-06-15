@@ -29,13 +29,22 @@ app.use("/api/order", ordersRouter);
 app.use("/api/user", usersRouter);
 app.use("/api/chatbot", chatbotRouter);
 app.use("/api/dashboard", dashboardRouter);
-app.use(frontRouter);
+app.use("/", frontRouter);
 app.use((req, res, next) => {
   res.render("404");
 });
 
-connectDb();
+// Start server only after database connection is established
+const startServer = async () => {
+    try {
+        await connectDb();
+        app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
+        });
+    } catch (error) {
+        console.error("Failed to start server:", error);
+        process.exit(1);
+    }
+};
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+startServer();
