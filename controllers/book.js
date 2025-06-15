@@ -7,10 +7,10 @@ export const createBook = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
 
   try {
-
     const bookData = {
       ...req.body,
-      image: req.file ? `/img/uploads/books/${req.file.filename}` : null,
+      // For now, we'll just store the file data in memory
+      image: req.file ? `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}` : null,
     };
 
     const book = await Book.create(bookData);
@@ -42,7 +42,7 @@ export const updateBook = async (req, res) => {
     
     // Handle image upload if a new image is provided
     if (req.file) {
-      updateData.image = `/img/uploads/books/${req.file.filename}`;
+      updateData.image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
     }
 
     const book = await Book.findByIdAndUpdate(req.params.id, updateData, {
